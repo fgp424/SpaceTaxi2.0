@@ -7,41 +7,48 @@ using DIKUArcade.EventBus;
 using DIKUArcade.Graphics;
 using DIKUArcade.Math;
 using DIKUArcade.Timers;
-using SpaceTaxi_1.Utilities;
+using SpaceTaxi.GameStates;
+
+
+
+
+using SpaceTaxi.Utilities;
 
 namespace SpaceTaxi_1 {
     public class Game : IGameEventProcessor<object> {
-        private Entity backGroundImage;
-        private GameEventBus<object> eventBus;
+        private GameEventBus<object> taxiBus;
         private GameTimer gameTimer;
         private Window win;
+        private StateMachine stateMachine;
 
         public Game() {
             // window
             win = new Window("Space Taxi Game v0.1", 500, AspectRatio.R1X1);
 
+            stateMachine = new StateMachine();
+
+            stateMachine.ActiveState.InitializeGameState();
+
             // event bus
-            eventBus = EventBus.GetBus();
-            eventBus.InitializeEventBus(new List<GameEventType> {
+            taxiBus = TaxiBus.GetBus();
+            taxiBus.InitializeEventBus(new List<GameEventType> {
                 GameEventType.InputEvent, // key press / key release
                 GameEventType.WindowEvent, // messages to the window, e.g. CloseWindow()
                 GameEventType.PlayerEvent // commands issued to the player object, e.g. move,
                                           // destroy, receive health, etc.
             });
-            win.RegisterEventBus(eventBus);
+
+
+            win.RegisterEventBus(taxiBus);
 
             // game timer
             gameTimer = new GameTimer(60); // 60 UPS, no FPS limit
 
             // game assets
-            backGroundImage = new Entity(
-                new StationaryShape(new Vec2F(0.0f, 0.0f), new Vec2F(1.0f, 1.0f)),
-                new Image(Path.Combine("Assets", "Images", "SpaceBackground.png"))
-            );
 
             // event delegation
-            eventBus.Subscribe(GameEventType.InputEvent, this);
-            eventBus.Subscribe(GameEventType.WindowEvent, this);
+            taxiBus.Subscribe(GameEventType.InputEvent, this);
+            taxiBus.Subscribe(GameEventType.WindowEvent, this);
         }
 
         public void GameLoop() {
@@ -50,12 +57,14 @@ namespace SpaceTaxi_1 {
 
                 while (gameTimer.ShouldUpdate()) {
                     win.PollEvents();
-                    eventBus.ProcessEvents();
+                    taxiBus.ProcessEvents();
+                    stateMachine.ActiveState.UpdateGameLogic();
                 }
 
                 if (gameTimer.ShouldRender()) {
                     win.Clear();
-                    backGroundImage.RenderEntity();
+
+                    stateMachine.ActiveState.RenderState(); 
 
                     win.SwapBuffers();
                 }
@@ -78,17 +87,17 @@ namespace SpaceTaxi_1 {
                 win.SaveScreenShot();
                 break;
             case "KEY_UP":
-                eventBus.RegisterEvent(
+                taxiBus.RegisterEvent(
                     GameEventFactory<object>.CreateGameEventForAllProcessors(
                         GameEventType.PlayerEvent, this, "BOOSTER_UPWARDS", "", ""));
                 break;
             case "KEY_LEFT":
-                eventBus.RegisterEvent(
+                taxiBus.RegisterEvent(
                     GameEventFactory<object>.CreateGameEventForAllProcessors(
                         GameEventType.PlayerEvent, this, "BOOSTER_TO_LEFT", "", ""));
                 break;
             case "KEY_RIGHT":
-                eventBus.RegisterEvent(
+                taxiBus.RegisterEvent(
                     GameEventFactory<object>.CreateGameEventForAllProcessors(
                         GameEventType.PlayerEvent, this, "BOOSTER_TO_RIGHT", "", ""));
                 break;
@@ -98,17 +107,17 @@ namespace SpaceTaxi_1 {
         public void KeyRelease(string key) {
             switch (key) {
             case "KEY_LEFT":
-                eventBus.RegisterEvent(
+                taxiBus.RegisterEvent(
                     GameEventFactory<object>.CreateGameEventForAllProcessors(
                         GameEventType.PlayerEvent, this, "STOP_ACCELERATE_LEFT", "", ""));
                 break;
             case "KEY_RIGHT":
-                eventBus.RegisterEvent(
+                taxiBus.RegisterEvent(
                     GameEventFactory<object>.CreateGameEventForAllProcessors(
                         GameEventType.PlayerEvent, this, "STOP_ACCELERATE_RIGHT", "", ""));
                 break;
             case "KEY_UP":
-                eventBus.RegisterEvent(
+                taxiBus.RegisterEvent(
                     GameEventFactory<object>.CreateGameEventForAllProcessors(
                         GameEventType.PlayerEvent, this, "STOP_ACCELERATE_UP", "", ""));
                 break;

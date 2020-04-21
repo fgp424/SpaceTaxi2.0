@@ -1,8 +1,8 @@
 using System.IO;
 using System.Collections.Generic;
-using SpaceTaxi_1.Utilities;
+using SpaceTaxi.Utilities;
 
-namespace SpaceTaxi_1.LevelLoading {
+namespace SpaceTaxi.LevelLoading {
     public class Reader {
         public List<string> MapData {get; private set;}
         public List<string> MetaData {get; private set;}

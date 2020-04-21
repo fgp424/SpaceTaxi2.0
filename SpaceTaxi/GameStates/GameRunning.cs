@@ -1,0 +1,59 @@
+
+using System;
+using System.IO;
+using System.Collections.Generic;
+using DIKUArcade;
+using DIKUArcade.EventBus;
+using DIKUArcade.Timers;
+using DIKUArcade.Graphics;
+using DIKUArcade.Entities;
+using DIKUArcade.Input;
+using DIKUArcade.Math;
+using DIKUArcade.Physics;
+using DIKUArcade.State;
+using DIKUArcade.Utilities;
+
+
+
+
+namespace SpaceTaxi.GameStates { 
+    public class GameRunning : IGameState { 
+
+        private static GameRunning instance = null;
+
+        private Entity backGroundImage;
+
+
+
+
+
+        public static GameRunning GetInstance() { 
+            return GameRunning.instance ?? (GameRunning.instance = new GameRunning()); 
+        }
+
+        public void GameLoop(){
+
+        }
+
+        public void InitializeGameState(){
+            backGroundImage = new Entity(
+                new StationaryShape(new Vec2F(0.0f, 0.0f), new Vec2F(1.0f, 1.0f)),
+                new Image(Path.Combine("Assets", "Images", "SpaceBackground.png"))
+            );
+        }
+
+        public void UpdateGameLogic(){
+
+        }
+
+        public void RenderState(){
+            backGroundImage.RenderEntity();
+
+        }
+
+        public void HandleKeyEvent(string keyValue, string keyAction){
+
+        }
+
+    }
+}

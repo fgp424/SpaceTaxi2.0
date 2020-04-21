@@ -1,6 +1,6 @@
 using DIKUArcade.EventBus;
 
-namespace SpaceTaxi_1.Utilities {
+namespace SpaceTaxi.Utilities {
     public static class EventBus {
         private static GameEventBus<object> eventBus;
 

@@ -1,6 +1,6 @@
 using DIKUArcade.Entities;
 
-namespace SpaceTaxi_1.LevelLoading {
+namespace SpaceTaxi.LevelLoading {
     public class Level {
         // Add fields as needed
         private EntityContainer obstacles;

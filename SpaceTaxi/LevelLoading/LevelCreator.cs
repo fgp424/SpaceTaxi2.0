@@ -1,4 +1,4 @@
-namespace SpaceTaxi_1.LevelLoading {
+namespace SpaceTaxi.LevelLoading {
     public class LevelCreator {
         // add fields as you see fit
         private Reader reader;

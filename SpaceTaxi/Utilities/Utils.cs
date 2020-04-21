@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using System.Reflection;
 
-namespace SpaceTaxi_1.Utilities {
+namespace SpaceTaxi.Utilities {
     public class Utils {
        public static string GetLevelFilePath(string filename) {
             // Find base path.
