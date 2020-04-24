@@ -14,7 +14,7 @@ using SpaceTaxi.GameStates;
 
 using SpaceTaxi.Utilities;
 
-namespace SpaceTaxi_1 {
+namespace SpaceTaxi {
     public class Game : IGameEventProcessor<object> {
         private GameEventBus<object> taxiBus;
         private GameTimer gameTimer;
@@ -34,7 +34,7 @@ namespace SpaceTaxi_1 {
             taxiBus.InitializeEventBus(new List<GameEventType> {
                 GameEventType.InputEvent, // key press / key release
                 GameEventType.WindowEvent, // messages to the window, e.g. CloseWindow()
-                GameEventType.PlayerEvent // commands issued to the player object, e.g. move,
+                GameEventType.PlayerEvent // commands issued to the player object, e.g. move,d
                                           // destroy, receive health, etc.
             });
 

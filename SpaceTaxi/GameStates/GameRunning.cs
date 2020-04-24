@@ -12,6 +12,7 @@ using DIKUArcade.Math;
 using DIKUArcade.Physics;
 using DIKUArcade.State;
 using DIKUArcade.Utilities;
+using SpaceTaxi.LevelLoading;
 
 
 
@@ -22,6 +23,10 @@ namespace SpaceTaxi.GameStates {
         private static GameRunning instance = null;
 
         private Entity backGroundImage;
+
+        private LevelCreator Level;
+
+
 
 
 
@@ -40,14 +45,19 @@ namespace SpaceTaxi.GameStates {
                 new StationaryShape(new Vec2F(0.0f, 0.0f), new Vec2F(1.0f, 1.0f)),
                 new Image(Path.Combine("Assets", "Images", "SpaceBackground.png"))
             );
+
+            Level = new LevelCreator();
+            Level.CreateLevel("short-n-sweet.txt");
+
         }
 
         public void UpdateGameLogic(){
-
+            
         }
 
         public void RenderState(){
             backGroundImage.RenderEntity();
+            Level.mapGrafics.RenderEntities();
 
         }
 
