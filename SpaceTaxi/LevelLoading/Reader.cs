@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Collections.Generic;
 using SpaceTaxi.Utilities;
@@ -12,7 +13,7 @@ namespace SpaceTaxi.LevelLoading {
 
         public List<string> PngData {get; private set;}
 
-        public string pngcharstring;
+        public string pngcharstring = "";
 
         public void ReadFile(string filename) {
             // Get each line of file as an entry in array lines.
@@ -27,7 +28,6 @@ namespace SpaceTaxi.LevelLoading {
             PngData = new List<string>();
 
 
-
             for (int i = 0 ; i<23 ; i++){
                 MapData.Add(lines[i]);
             }
@@ -36,21 +36,29 @@ namespace SpaceTaxi.LevelLoading {
                 MetaData.Add(lines[i]);
             }
 
-            foreach(string a in lines){
-                if(lines.Contains("png")==true){
-                    LegendData.Add(a);
+            for(int i = 0; i<lines.Length; i++){
+               if(lines[i].Contains("png")==true){ 
+                   LegendData.Add(lines[i]);
                 }
             }
 
-            foreach(string a in lines){
-                if(lines.Contains("Customer")==true){
-                    CustomerData.Add(a);
+
+            for(int i = 0; i<lines.Length; i++){
+               if(lines[i].Contains("Customer")==true){ 
+                   CustomerData.Add(lines[i]);
                 }
             }
+            
 
-            foreach(string a in LegendData){
+
+            foreach(var a in LegendData){
+                Console.WriteLine("Legendata");
                 pngcharstring += a.Substring(0,1);
-                PngData.Add(a.Substring(3, a.Length-1));
+                PngData.Add(a.Substring(3, a.Length-3));
+            }
+
+            foreach(var q in CustomerData){
+                Console.WriteLine(q);
             }
         }
     }

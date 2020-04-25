@@ -23,7 +23,7 @@ namespace SpaceTaxi {
 
         public Game() {
             // window
-            win = new Window("Space Taxi Game v0.1", 500, AspectRatio.R1X1);
+            win = new Window("Space Taxi Game v0.1", 500, AspectRatio.R40X23);
 
             stateMachine = new StateMachine();
 
