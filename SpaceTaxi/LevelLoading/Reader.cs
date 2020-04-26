@@ -21,9 +21,13 @@ namespace SpaceTaxi.LevelLoading {
 
 
             // Iterate over lines and add data till the corresponding field
+            // MapData for saveing txt file of the map, in lines.
             MapData = new List<string>();
+            // MetaData for name and amout of platforms
             MetaData = new List<string>();
+            // LegendData for char and .png ref.
             LegendData = new List<string>();
+            // CustomerData for Customer information.
             CustomerData = new List<string>();
             PngData = new List<string>();
 

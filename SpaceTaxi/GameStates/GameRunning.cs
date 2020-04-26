@@ -13,7 +13,7 @@ using DIKUArcade.Physics;
 using DIKUArcade.State;
 using DIKUArcade.Utilities;
 using SpaceTaxi.LevelLoading;
-
+using SpaceTaxi.StaticObjects;
 
 
 
@@ -37,12 +37,12 @@ namespace SpaceTaxi.GameStates {
         }
 
         public void InitializeGameState(){
-            backGroundImage = new Entity(
+            backGroundImage = new VisualObjects(
                 new StationaryShape(new Vec2F(0.0f, 0.0f), new Vec2F(1.0f, 1.0f)),
                 new Image(Path.Combine("Assets", "Images", "SpaceBackground.png"))
             );
             Level = new LevelCreator();
-            Level.CreateLevel("short-n-sweet.txt");
+            Level.CreateLevel("the-beach.txt");
 
         }
 

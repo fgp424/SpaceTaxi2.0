@@ -42,6 +42,7 @@ public class Player : IGameEventProcessor<object> {
         if ((x + vecx) > 0.0 && (x + vecx) < 0.90)
             Entity.Shape.Move();
     }
+    
 /// <summary> Method for eventbus </summary>
     public void ProcessEvent(GameEventType eventType,
         GameEvent<object> gameEvent) {

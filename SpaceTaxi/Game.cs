@@ -8,10 +8,6 @@ using DIKUArcade.Graphics;
 using DIKUArcade.Math;
 using DIKUArcade.Timers;
 using SpaceTaxi.GameStates;
-
-
-
-
 using SpaceTaxi.Utilities;
 
 namespace SpaceTaxi {
@@ -23,7 +19,7 @@ namespace SpaceTaxi {
 
         public Game() {
             // window
-            win = new Window("Space Taxi Game v0.1", 500, AspectRatio.R40X23);
+            win = new Window("Space Taxi Game v0.1", 500, AspectRatio.R16X9);
 
             stateMachine = new StateMachine();
 

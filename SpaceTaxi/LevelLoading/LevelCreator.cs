@@ -46,7 +46,6 @@ namespace SpaceTaxi.LevelLoading {
                 xValue = 0.0f-(1.0f/40.0f);
                 yValue = yValue-(1.0f/23.0f);
                 var rand = a;
-                Console.WriteLine("");
                 foreach(char c in rand){
                     xValue = xValue+(1.0f/40.0f);
                     for (int i = 0; i<PngChar.Length; i++){
@@ -66,9 +65,6 @@ namespace SpaceTaxi.LevelLoading {
                 foreach(char c in rand){
                     playerx = playerx+(1.0f/40.0f);
                     if (c == '>'){
-                        Console.WriteLine("Found it");
-                        Console.WriteLine(playerx);
-                        Console.WriteLine(playery);
                         player = new Player(
                             new DynamicShape(new Vec2F(playerx-.05f, playery-.05f), new Vec2F((.1f), (.1f))), 
                             new Image(Path.Combine("Assets", "Images", "Taxi_Thrust_None.png")));
