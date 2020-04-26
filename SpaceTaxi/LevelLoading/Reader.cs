@@ -52,14 +52,10 @@ namespace SpaceTaxi.LevelLoading {
 
 
             foreach(var a in LegendData){
-                Console.WriteLine("Legendata");
                 pngcharstring += a.Substring(0,1);
                 PngData.Add(a.Substring(3, a.Length-3));
             }
 
-            foreach(var q in CustomerData){
-                Console.WriteLine(q);
-            }
         }
     }
 }

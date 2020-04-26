@@ -2,7 +2,7 @@ using DIKUArcade.Graphics;
 using DIKUArcade.Entities;
 
 
-namespace SpaceTaxi.visObjects {
+namespace SpaceTaxi.StaticObjects {
 
     
     public class VisualObjects : Entity {

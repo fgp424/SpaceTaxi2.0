@@ -42,7 +42,7 @@ namespace SpaceTaxi.GameStates {
                 new Image(Path.Combine("Assets", "Images", "SpaceBackground.png"))
             );
             Level = new LevelCreator();
-            Level.CreateLevel("the-beach.txt");
+            Level.CreateLevel("short-n-sweet.txt");
 
         }
 
@@ -53,6 +53,7 @@ namespace SpaceTaxi.GameStates {
         public void RenderState(){
             backGroundImage.RenderEntity();
             Level.mapGrafics.RenderEntities();
+            Level.player.Entity.RenderEntity();
 
         }
 

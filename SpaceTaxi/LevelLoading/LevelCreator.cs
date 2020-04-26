@@ -4,7 +4,7 @@ using DIKUArcade.Graphics;
 using System.IO;
 using DIKUArcade.Entities;
 using DIKUArcade.Math;
-using SpaceTaxi.visObjects;
+using SpaceTaxi.StaticObjects;
 
 namespace SpaceTaxi.LevelLoading {
     public class LevelCreator {
@@ -13,7 +13,10 @@ namespace SpaceTaxi.LevelLoading {
         // add fields as you see fit
         float xValue = 0.0f;
         float yValue = 1.0f;
+        float playerx = 0.0f;
+        float playery = 1.0f;
         private Reader reader;
+        public Player player;
 
         List<Image> mapPics = new List<Image>();
 
@@ -43,11 +46,10 @@ namespace SpaceTaxi.LevelLoading {
                 xValue = 0.0f-(1.0f/40.0f);
                 yValue = yValue-(1.0f/23.0f);
                 var rand = a;
+                Console.WriteLine("");
                 foreach(char c in rand){
                     xValue = xValue+(1.0f/40.0f);
-                    Console.Write(reader.pngcharstring.Length);
                     for (int i = 0; i<PngChar.Length; i++){
-                        Console.WriteLine(PngChar[i]);
                         if (PngChar[i] == c){
                             mapGrafics.AddStationaryEntity(new VisualObjects(
                                 new StationaryShape(new Vec2F(xValue, yValue), new Vec2F((1.0f/40.0f), (1.0f/23.0f))), 
@@ -56,6 +58,24 @@ namespace SpaceTaxi.LevelLoading {
                     }
                 }
             }
+
+            foreach (string a in reader.MapData){
+                playerx = 0.0f-(1.0f/40.0f);
+                playery = playery-(1.0f/23.0f);
+                var rand = a;
+                foreach(char c in rand){
+                    playerx = playerx+(1.0f/40.0f);
+                    if (c == '>'){
+                        Console.WriteLine("Found it");
+                        Console.WriteLine(playerx);
+                        Console.WriteLine(playery);
+                        player = new Player(
+                            new DynamicShape(new Vec2F(playerx-.05f, playery-.05f), new Vec2F((.1f), (.1f))), 
+                            new Image(Path.Combine("Assets", "Images", "Taxi_Thrust_None.png")));
+                        }
+                    }
+                }
+            
 
             return level;
         }
