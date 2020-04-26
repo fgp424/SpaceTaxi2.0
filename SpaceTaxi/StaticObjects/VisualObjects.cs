@@ -10,7 +10,7 @@ namespace SpaceTaxi.StaticObjects {
     /// <summary> Properties </summary>
         public Entity Entity {get; private set;}
 
-    /// <summary> Constructor that creates background image </summary>
+    /// <summary> Constructor that creates a static image </summary>
     /// <param name="shape"> Defines the position of the stationary shape </param>
     /// <param name="image"> The image used for the object</param>
     /// <returns> Visual objects instance </returns>

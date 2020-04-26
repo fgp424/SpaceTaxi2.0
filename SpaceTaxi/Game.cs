@@ -23,8 +23,6 @@ namespace SpaceTaxi {
 
             stateMachine = new StateMachine();
 
-            stateMachine.ActiveState.InitializeGameState();
-
             // event bus
             taxiBus = TaxiBus.GetBus();
             taxiBus.InitializeEventBus(new List<GameEventType> {
@@ -34,6 +32,7 @@ namespace SpaceTaxi {
                                           // destroy, receive health, etc.
             });
 
+            stateMachine.ActiveState.InitializeGameState();
 
             win.RegisterEventBus(taxiBus);
 
