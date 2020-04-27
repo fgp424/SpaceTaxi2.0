@@ -5,6 +5,7 @@ using System.IO;
 using DIKUArcade.Entities;
 using DIKUArcade.Math;
 using SpaceTaxi.StaticObjects;
+using SpaceTaxi.Enums;
 
 namespace SpaceTaxi.LevelLoading {
     public class LevelCreator {
@@ -67,7 +68,8 @@ namespace SpaceTaxi.LevelLoading {
                     if (c == '>'){
                         player = new Player(
                             new DynamicShape(new Vec2F(playerx-.05f, playery-.05f), new Vec2F((.1f), (.1f))), 
-                            new Image(Path.Combine("Assets", "Images", "Taxi_Thrust_None_Right.png")));
+                            new Image(Path.Combine("Assets", "Images", "Taxi_Thrust_None_Right.png")),
+                            (Orientation)1);
                         }
                     }
                 }

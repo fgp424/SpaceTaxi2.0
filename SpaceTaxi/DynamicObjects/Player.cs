@@ -11,6 +11,7 @@ using DIKUArcade.Math;
 using DIKUArcade.Physics;
 using DIKUArcade.State;
 using DIKUArcade.Utilities;
+using SpaceTaxi.Enums;
 
 
 
@@ -22,14 +23,17 @@ public class Player : IGameEventProcessor<object> {
 
 /// <summary> Properties </summary>
     public Entity Entity {get; private set;}
+    public Orientation Orientation;
     private Vec2F Physics;
 
 /// <summary> A constructor that creates Player as an instance</summary>
 /// <param name="shape"> Defines the position of the dynamic shape </param>
 /// <param name="image"> The image used for the object</param>
+/// <param name="orientation"> Enum, which indicates direction</param>
 /// <returns> Player instance </returns>   
-    public Player(DynamicShape shape, IBaseImage image) {
+    public Player(DynamicShape shape, IBaseImage image, Orientation orientation) {
         Entity = new Entity(shape, image);
+        Orientation = orientation;
         TaxiBus.GetBus().Subscribe(GameEventType.PlayerEvent, this);
     }
 
@@ -63,24 +67,40 @@ public class Player : IGameEventProcessor<object> {
             if (eventType == GameEventType.PlayerEvent) {
                 switch(gameEvent.Message) {
                     case "BOOSTER_UPWARDS":
-                        Direction(new Vec2F(0.0f, 0.01f));
+                        if (Orientation == (Orientation)0) {
+                            Entity.Image = new Image(Path.Combine("Assets", "Images", "Taxi_Thrust_Bottom.png"));
+                        } else if (Orientation == (Orientation)1) {
+                            Entity.Image = new Image(Path.Combine("Assets", "Images", "Taxi_Thrust_Bottom_Right.png"));
+                        }
+                        Direction(new Vec2F(0.0f, 0.0001f));
                         break;
 
                     case "BOOSTER_TO_RIGHT":
-                        Direction(new Vec2F(0.01f, 0.0f));
+                        Entity.Image = new Image(Path.Combine("Assets", "Images", "Taxi_Thrust_Back_Right.png"));
+                        Orientation = (Orientation)1;
+                        Direction(new Vec2F(0.0001f, 0.0f));
                         break;
 
                     case "BOOSTER_TO_LEFT":
-                        Direction(new Vec2F(-0.01f, 0.0f));
+                        Entity.Image = new Image(Path.Combine("Assets", "Images", "Taxi_Thrust_Back.png"));
+                        Orientation = (Orientation)0;
+                        Direction(new Vec2F(-0.0001f, 0.0f));
                         break;
 
                     case "STOP_ACCELERATE_UP":
+                        if (Orientation == (Orientation)0) {
+                            Entity.Image = new Image(Path.Combine("Assets", "Images", "Taxi_Thrust_None.png"));
+                        } else if (Orientation == (Orientation)1) {
+                            Entity.Image = new Image(Path.Combine("Assets", "Images", "Taxi_Thrust_None_Right.png"));
+                        }
                         Direction(new Vec2F(0.00f, 0.0f));
                         break;
                     case "STOP_ACCELERATE_RIGHT":
+                        Entity.Image = new Image(Path.Combine("Assets", "Images", "Taxi_Thrust_None_Right.png"));
                         Direction(new Vec2F(0.00f, 0.0f));
                         break;   
                     case "STOP_ACCELERATE_LEFT":
+                        Entity.Image = new Image(Path.Combine("Assets", "Images", "Taxi_Thrust_None.png"));
                         Direction(new Vec2F(0.00f, 0.0f));
                         break;                   
                 }
