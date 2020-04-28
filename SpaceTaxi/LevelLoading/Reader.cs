@@ -7,7 +7,8 @@ using System.Linq;
 namespace SpaceTaxi.LevelLoading {
     public class Reader {
         public List<string> MapData {get; private set;}
-        public List<string> MetaData {get; private set;}
+        public List<string> NameData {get; private set;}
+        public string PlatformData {get; private set;}
         public List<string> LegendData {get; private set;}
         public List<string> CustomerData {get; private set;}
 
@@ -24,11 +25,12 @@ namespace SpaceTaxi.LevelLoading {
             // MapData for saveing txt file of the map, in lines.
             MapData = new List<string>();
             // MetaData for name and amout of platforms
-            MetaData = new List<string>();
+            NameData = new List<string>();
             // LegendData for char and .png ref.
             LegendData = new List<string>();
             // CustomerData for Customer information.
             CustomerData = new List<string>();
+            PlatformData = lines[25];
             PngData = new List<string>();
 
 
@@ -36,9 +38,7 @@ namespace SpaceTaxi.LevelLoading {
                 MapData.Add(lines[i]);
             }
 
-            for (int i = 24 ; i<26 ; i++){
-                MetaData.Add(lines[i]);
-            }
+            NameData.Add(lines[24]);
 
             for(int i = 0; i<lines.Length; i++){
                if(lines[i].Contains("png")==true){ 
@@ -53,7 +53,6 @@ namespace SpaceTaxi.LevelLoading {
                 }
             }
             
-
 
             foreach(var a in LegendData){
                 pngcharstring += a.Substring(0,1);

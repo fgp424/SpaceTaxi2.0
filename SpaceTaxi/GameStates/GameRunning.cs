@@ -48,7 +48,8 @@ namespace SpaceTaxi.GameStates {
 
         public void UpdateGameLogic(){
             Level.player.Move();
-            //Level.player.Gravity();
+            Level.player.GraficUpdate();
+            Level.player.Gravity();
         }
 
         public void RenderState(){

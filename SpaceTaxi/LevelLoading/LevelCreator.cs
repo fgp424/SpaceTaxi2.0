@@ -24,6 +24,10 @@ namespace SpaceTaxi.LevelLoading {
         public EntityContainer<VisualObjects> mapGrafics = new EntityContainer<VisualObjects>();
 
         private char [] PngChar; 
+        
+        private string PlatformString;
+
+        private char[] Platforms;
 
         
 
@@ -42,6 +46,16 @@ namespace SpaceTaxi.LevelLoading {
                 mapPics.Add(new Image(Path.Combine("Assets", "Images", reader.PngData[i])));
             }
 
+            PlatformString = reader.PlatformData.Remove(0, 10);
+
+            foreach (char c in PlatformString){
+                PlatformString.Replace(",", "");
+                PlatformString.Replace(" ", "");
+            }
+            Platforms = PlatformString.ToCharArray();
+
+
+            
 
             foreach (string a in reader.MapData){
                 xValue = 0.0f-(1.0f/40.0f);
@@ -49,32 +63,22 @@ namespace SpaceTaxi.LevelLoading {
                 var rand = a;
                 foreach(char c in rand){
                     xValue = xValue+(1.0f/40.0f);
+                    
                     for (int i = 0; i<PngChar.Length; i++){
                         if (PngChar[i] == c){
                             mapGrafics.AddStationaryEntity(new VisualObjects(
                                 new StationaryShape(new Vec2F(xValue, yValue), new Vec2F((1.0f/40.0f), (1.0f/23.0f))), 
                                 mapPics[i]));
                         }
-                    }
-                }
-            }
-
-            foreach (string a in reader.MapData){
-                playerx = 0.0f-(1.0f/40.0f);
-                playery = playery-(1.0f/23.0f);
-                var rand = a;
-                foreach(char c in rand){
-                    playerx = playerx+(1.0f/40.0f);
-                    if (c == '>'){
+                        if (c == '>'){
                         player = new Player(
-                            new DynamicShape(new Vec2F(playerx-.05f, playery-.05f), new Vec2F((.1f), (.1f))), 
+                            new DynamicShape(new Vec2F(xValue-.05f, yValue-.05f), new Vec2F((.1f), (.1f))), 
                             new Image(Path.Combine("Assets", "Images", "Taxi_Thrust_None_Right.png")),
                             (Orientation)1);
                         }
                     }
                 }
-            
-
+            }
             return level;
         }
     }
