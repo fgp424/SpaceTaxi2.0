@@ -13,13 +13,9 @@ using DIKUArcade.State;
 using DIKUArcade.Utilities;
 using SpaceTaxi.Enums;
 
-
-
-
 /// <summary> Player class for player logic </summary>
 
 public class Player : IGameEventProcessor<object> {
-
 
 /// <summary> Properties </summary>
     public Entity Entity {get; private set;}
@@ -62,7 +58,6 @@ public class Player : IGameEventProcessor<object> {
         Physics = new Vec2F(0.0f, 0.0f);
     }
 
-
     public void Gravity(){
         Physics.Y = Physics.Y-0.00002f;
         if (Physics.X < 0 ){
@@ -83,7 +78,6 @@ public class Player : IGameEventProcessor<object> {
             } else {
                 Entity.Image = NONELEFT;
             }
-
         } else if (Orientation == (Orientation)1){
             if (IsUpPressed == true && IsRightPressed == true){
                 Entity.Image = UPNRIGHT;
@@ -94,11 +88,8 @@ public class Player : IGameEventProcessor<object> {
             } else {
                 Entity.Image = NONERIGHT;
             }
-
         }
-
     }
-
 
     public void Direction(Vec2F vec) {
         Entity.Shape.AsDynamicShape().Direction = vec;
@@ -119,7 +110,6 @@ public class Player : IGameEventProcessor<object> {
                 Physics.Y = Physics.Y + 0.0001f;
             } else if (IsRightPressed == true){
                 Physics.X = Physics.X + 0.0001f;}
-
     }
 
     
@@ -131,17 +121,14 @@ public class Player : IGameEventProcessor<object> {
                     case "BOOSTER_UPWARDS":
                         IsUpPressed = true;
                         break;
-
                     case "BOOSTER_TO_RIGHT":
                         Orientation = (Orientation)1;
                         IsRightPressed = true;
                         break;
-
                     case "BOOSTER_TO_LEFT":
                         Orientation = (Orientation)0;
                         IsLeftPressed = true;
                         break;
-
                     case "STOP_ACCELERATE_UP":
                         IsUpPressed = false;
                         break;
