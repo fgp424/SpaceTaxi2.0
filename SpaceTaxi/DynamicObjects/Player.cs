@@ -110,13 +110,13 @@ public class Player : IGameEventProcessor<object> {
             if (IsUpPressed == true && IsLeftPressed == true){
                 Physics.Y = Physics.Y + 0.00005f;
                 Physics.X = Physics.X - 0.0001f;
+            } else if (IsUpPressed == true && IsRightPressed == true){
+                Physics.X = Physics.X + 0.0001f;
+                Physics.Y = Physics.Y + 0.0001f;
             } else if (IsUpPressed == true){
                 Physics.Y = Physics.Y + 0.00005f;
             } else if (IsLeftPressed == true){
                 Physics.X = Physics.X - 0.0001f;
-            } else if (IsUpPressed == true && IsRightPressed == true){
-                Physics.X = Physics.X + 0.0001f;
-                Physics.Y = Physics.Y + 0.0001f;
             } else if (IsRightPressed == true){
                 Physics.X = Physics.X + 0.0001f;}
 
