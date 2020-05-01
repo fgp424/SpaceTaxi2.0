@@ -14,8 +14,6 @@ namespace SpaceTaxi.LevelLoading {
         // add fields as you see fit
         float xValue = 0.0f;
         float yValue = 1.0f;
-        float playerx = 0.0f;
-        float playery = 1.0f;
         private Reader reader;
         public Player player;
 
@@ -40,7 +38,7 @@ namespace SpaceTaxi.LevelLoading {
         
         public Level CreateLevel(string levelname) {
             // Create the Level here
-            Level level = new Level();
+            Level level = new Level(levelname);
             reader.ReadFile(levelname);
             PngChar = reader.pngcharstring.ToCharArray();
 
@@ -71,12 +69,12 @@ namespace SpaceTaxi.LevelLoading {
                     
                     for (int i = 0; i<PngChar.Length; i++){
                         if (PngChar[i] == c){
-                            mapGrafics.AddStationaryEntity(new VisualObjects(
+                            level.obstacles.AddStationaryEntity(new VisualObjects(
                                 new StationaryShape(new Vec2F(xValue, yValue), new Vec2F((1.0f/40.0f), (1.0f/23.0f))), 
                                 mapPics[i]));
                         }
                         if (c == '>'){
-                        player = new Player(
+                        level.player = new Player(
                             new DynamicShape(new Vec2F(xValue-.05f, yValue-.05f), new Vec2F((.1f), (.1f))), 
                             new Image(Path.Combine("Assets", "Images", "Taxi_Thrust_None_Right.png")),
                             (Orientation)1);
@@ -84,7 +82,7 @@ namespace SpaceTaxi.LevelLoading {
                     }
                     for (int i = 0; i<Platforms.Length; i++){
                         if (Platforms[i] == c){
-                            platforms.AddStationaryEntity(new Platform(
+                            level.platforms.AddStationaryEntity(new Platform(
                                 new StationaryShape(new Vec2F(xValue, yValue), new Vec2F((1.0f/40.0f), (1.0f/23.0f))), 
                                 platformPics[i]));
                         }

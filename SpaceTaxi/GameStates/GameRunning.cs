@@ -24,8 +24,9 @@ namespace SpaceTaxi.GameStates {
 
         private Entity backGroundImage;
 
-        private LevelCreator Level;
+        private Level Level;
 
+        private LevelCreator LevelCreator;
 
 
         public static GameRunning GetInstance() { 
@@ -41,22 +42,19 @@ namespace SpaceTaxi.GameStates {
                 new StationaryShape(new Vec2F(0.0f, 0.0f), new Vec2F(1.0f, 1.0f)),
                 new Image(Path.Combine("Assets", "Images", "SpaceBackground.png"))
             );
-            Level = new LevelCreator();
-            Level.CreateLevel("the-beach.txt");
+
+            LevelCreator = new LevelCreator();
+            Level = LevelCreator.CreateLevel("the-beach.txt");
 
         }
 
         public void UpdateGameLogic(){
-            Level.player.Move();
-            Level.player.GraficUpdate();
-            Level.player.Gravity();
+            Level.UpdateLevelLogic();
         }
 
         public void RenderState(){
             backGroundImage.RenderEntity();
-            Level.mapGrafics.RenderEntities();
-            Level.platforms.RenderEntities();
-            Level.player.Entity.RenderEntity();
+            Level.RenderLevelObjects();
 
         }
 

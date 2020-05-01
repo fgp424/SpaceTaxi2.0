@@ -19,7 +19,7 @@ public class Player : IGameEventProcessor<object> {
 
 /// <summary> Properties </summary>
     public Entity Entity {get; private set;}
-    public Orientation Orientation;
+    public Orientation Orientation {get; private set;}
     private Vec2F Physics;
     private IBaseImage UPRIGHT;
     private IBaseImage UPLEFT;
