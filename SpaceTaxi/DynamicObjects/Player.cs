@@ -64,11 +64,11 @@ public class Player : IGameEventProcessor<object> {
 
 
     public void Gravity(){
-        Physics.Y = Physics.Y-0.00001f;
+        Physics.Y = Physics.Y-0.00002f;
         if (Physics.X < 0 ){
-            Physics.X = Physics.X + 0.00001f;
+            Physics.X = Physics.X + 0.000015f;
         } else if (Physics.X > 0 ){
-            Physics.X = Physics.X - 0.00001f;
+            Physics.X = Physics.X - 0.000015f;
         }
     }
 
@@ -115,8 +115,8 @@ public class Player : IGameEventProcessor<object> {
             } else if (IsLeftPressed == true){
                 Physics.X = Physics.X - 0.0001f;
             } else if (IsUpPressed == true && IsRightPressed == true){
-                Physics.Y = Physics.Y + 0.0001f;
                 Physics.X = Physics.X + 0.0001f;
+                Physics.Y = Physics.Y + 0.0001f;
             } else if (IsRightPressed == true){
                 Physics.X = Physics.X + 0.0001f;}
 

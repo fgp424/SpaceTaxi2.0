@@ -20,8 +20,11 @@ namespace SpaceTaxi.LevelLoading {
         public Player player;
 
         List<Image> mapPics = new List<Image>();
+        List<Image> platformPics = new List<Image>();
 
         public EntityContainer<VisualObjects> mapGrafics = new EntityContainer<VisualObjects>();
+        
+        public EntityContainer<Platform> platforms = new EntityContainer<Platform>();
 
         private char [] PngChar; 
         
@@ -47,15 +50,17 @@ namespace SpaceTaxi.LevelLoading {
             }
 
             PlatformString = reader.PlatformData.Remove(0, 10);
-
-            foreach (char c in PlatformString){
-                PlatformString.Replace(",", "");
-                PlatformString.Replace(" ", "");
-            }
+            PlatformString = PlatformString.Replace(",", "");
+            PlatformString = PlatformString.Replace(" ", "");
             Platforms = PlatformString.ToCharArray();
 
-
-            
+            foreach (char c in Platforms){
+                for(int i = 0; i<PngChar.Length; i++)
+                    if(c == PngChar[i]){
+                        PngChar[i] = Convert.ToChar(0x0);
+                        platformPics.Add(mapPics[i]);
+                    }
+            }
 
             foreach (string a in reader.MapData){
                 xValue = 0.0f-(1.0f/40.0f);
@@ -77,8 +82,16 @@ namespace SpaceTaxi.LevelLoading {
                             (Orientation)1);
                         }
                     }
+                    for (int i = 0; i<Platforms.Length; i++){
+                        if (Platforms[i] == c){
+                            platforms.AddStationaryEntity(new Platform(
+                                new StationaryShape(new Vec2F(xValue, yValue), new Vec2F((1.0f/40.0f), (1.0f/23.0f))), 
+                                platformPics[i]));
+                        }
+                    }
                 }
             }
+            
             return level;
         }
     }

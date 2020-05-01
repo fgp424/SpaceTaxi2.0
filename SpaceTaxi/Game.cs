@@ -9,6 +9,7 @@ using DIKUArcade.Math;
 using DIKUArcade.Timers;
 using SpaceTaxi.GameStates;
 using SpaceTaxi.Utilities;
+using SpaceTaxi.Enums;
 
 namespace SpaceTaxi {
     public class Game : IGameEventProcessor<object> {
@@ -28,11 +29,11 @@ namespace SpaceTaxi {
             taxiBus.InitializeEventBus(new List<GameEventType> {
                 GameEventType.InputEvent, // key press / key release
                 GameEventType.WindowEvent, // messages to the window, e.g. CloseWindow()
-                GameEventType.PlayerEvent // commands issued to the player object, e.g. move,d
-                                          // destroy, receive health, etc.
+                GameEventType.PlayerEvent, // commands issued to the player object, e.g. move,d
+                GameEventType.GameStateEvent
             });
 
-            stateMachine.ActiveState.InitializeGameState();
+            stateMachine.SwitchState(GameStateType.MainMenu);
 
             win.RegisterEventBus(taxiBus);
 
@@ -44,6 +45,7 @@ namespace SpaceTaxi {
             // event delegation
             taxiBus.Subscribe(GameEventType.InputEvent, this);
             taxiBus.Subscribe(GameEventType.WindowEvent, this);
+            taxiBus.Subscribe(GameEventType.GameStateEvent, stateMachine); 
         }
 
         public void GameLoop() {
@@ -73,6 +75,7 @@ namespace SpaceTaxi {
         }
 
         public void KeyPress(string key) {
+            stateMachine.ActiveState.HandleKeyEvent(key, "KEY_PRESS");
             switch (key) {
             case "KEY_ESCAPE":
                 win.CloseWindow();
@@ -100,6 +103,7 @@ namespace SpaceTaxi {
         }
 
         public void KeyRelease(string key) {
+            stateMachine.ActiveState.HandleKeyEvent(key, "KEY_RELEASE");
             switch (key) {
             case "KEY_LEFT":
                 taxiBus.RegisterEvent(
