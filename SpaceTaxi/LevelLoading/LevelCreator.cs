@@ -78,6 +78,7 @@ namespace SpaceTaxi.LevelLoading {
                             new DynamicShape(new Vec2F(xValue-.05f, yValue-.05f), new Vec2F((.1f), (.1f))), 
                             new Image(Path.Combine("Assets", "Images", "Taxi_Thrust_None_Right.png")),
                             (Orientation)1);
+                            level.startpos = new Vec2F(xValue-.05f, yValue-.05f);
                         }
                     }
                     for (int i = 0; i<Platforms.Length; i++){
@@ -87,9 +88,14 @@ namespace SpaceTaxi.LevelLoading {
                                 platformPics[i]));
                         }
                     }
+                    
+                    if ('^'== c){
+                        level.portal.AddStationaryEntity(new VisualObjects(
+                            new StationaryShape(new Vec2F(xValue, yValue), new Vec2F((1.0f/40.0f), (1.0f/23.0f))), 
+                            null ));
+                    }
                 }
             }
-            
             return level;
         }
     }

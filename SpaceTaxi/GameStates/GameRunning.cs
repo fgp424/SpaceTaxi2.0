@@ -23,10 +23,17 @@ namespace SpaceTaxi.GameStates {
         private static GameRunning instance = null;
 
         private Entity backGroundImage;
+        private Level ActiveLevel;
+        private Level Level1;
+        private Level Level2;
+        private AnimationContainer explosions;
+        private List<Image> explosionStrides;
+        private int explosionLength = 500;
+        private LevelCreator LevelCreator1;
 
-        private Level Level;
+        private LevelCreator LevelCreator2;
 
-        private LevelCreator LevelCreator;
+        
 
 
         public static GameRunning GetInstance() { 
@@ -43,24 +50,76 @@ namespace SpaceTaxi.GameStates {
                 new Image(Path.Combine("Assets", "Images", "SpaceBackground.png"))
             );
 
-            LevelCreator = new LevelCreator();
-            Level = LevelCreator.CreateLevel("the-beach.txt");
+            explosionStrides = ImageStride.CreateStrides(8,
+                Path.Combine("Assets", "Images", "Explosion.png"));
+            explosions = new AnimationContainer(10);
 
+            LevelCreator1 = new LevelCreator();
+            LevelCreator2 = new LevelCreator();
+
+            Level1 = LevelCreator1.CreateLevel("short-n-sweet.txt");
+            Level2 = LevelCreator2.CreateLevel("the-beach.txt");
+            ActiveLevel = Level1;
         }
 
         public void UpdateGameLogic(){
-            Level.UpdateLevelLogic();
+            ActiveLevel.UpdateLevelLogic();
+            Collision();
         }
 
         public void RenderState(){
             backGroundImage.RenderEntity();
-            Level.RenderLevelObjects();
-
+            ActiveLevel.RenderLevelObjects();
+            explosions.RenderAnimations();
         }
 
         public void HandleKeyEvent(string keyValue, string keyAction){
 
         }
 
+        public void AddExplosion(float posX, float posY,
+            float extentX, float extentY) {
+            explosions.AddAnimation( 
+                new StationaryShape(posX, posY, extentX, extentY), explosionLength, 
+                new ImageStride(explosionLength / 8, explosionStrides));
+        }
+
+        public void Collision(){
+            foreach (Entity o in ActiveLevel.obstacles) {
+                    if (DIKUArcade.Physics.CollisionDetection.Aabb(ActiveLevel.player.Entity.Shape.AsDynamicShape(), o.Shape).Collision){
+                        ActiveLevel.player.Entity.DeleteEntity();
+                        AddExplosion(ActiveLevel.player.Entity.Shape.Position.X-0.05f, ActiveLevel.player.Entity.Shape.Position.Y-0.05f,0.2f,0.2f);
+                        ActiveLevel.player.Entity.Shape.Position = new Vec2F(5.0f,5.0f);
+                    }
+            }
+
+            foreach (Entity e in ActiveLevel.platforms) {
+                    if (DIKUArcade.Physics.CollisionDetection.Aabb(ActiveLevel.player.Entity.Shape.AsDynamicShape(), e.Shape).Collision){
+                        if(ActiveLevel.player.Physics.Y > -0.004f){
+                            ActiveLevel.player.Physics.Y = 0.0f;
+                            ActiveLevel.player.Physics.X = 0.0f;
+                        }
+                        else{
+                            ActiveLevel.player.Entity.DeleteEntity();
+                            AddExplosion(ActiveLevel.player.Entity.Shape.Position.X-0.05f, ActiveLevel.player.Entity.Shape.Position.Y-0.05f,0.2f,0.2f);
+                            ActiveLevel.player.Entity.Shape.Position = new Vec2F(5.0f,5.0f);
+                        }
+                    }
+            }
+            foreach (Entity p in ActiveLevel.portal) {
+                    if (DIKUArcade.Physics.CollisionDetection.Aabb(ActiveLevel.player.Entity.Shape.AsDynamicShape(), p.Shape).Collision){
+                        if (ActiveLevel == Level1){
+                            Level2.player.Entity.Shape.Position = Level2.startpos;
+                            Level2.player.Physics = new Vec2F (0.0f, 0.0f);
+                            ActiveLevel = Level2;
+                        } else if (ActiveLevel == Level2){
+                            Level1.player.Entity.Shape.Position = Level1.startpos;
+                            Level1.player.Physics = new Vec2F (0.0f, 0.0f);
+                            ActiveLevel = Level1;
+                        }
+                    }
+            }
+
+        }
     }
 }

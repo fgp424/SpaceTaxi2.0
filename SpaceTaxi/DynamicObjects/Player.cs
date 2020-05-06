@@ -20,7 +20,7 @@ public class Player : IGameEventProcessor<object> {
 /// <summary> Properties </summary>
     public Entity Entity {get; private set;}
     public Orientation Orientation {get; private set;}
-    private Vec2F Physics;
+    public Vec2F Physics;
     private IBaseImage UPRIGHT;
     private IBaseImage UPLEFT;
     private IBaseImage UPNRIGHT;
@@ -59,7 +59,11 @@ public class Player : IGameEventProcessor<object> {
     }
 
     public void Gravity(){
-        Physics.Y = Physics.Y-0.00002f;
+        if (Physics.Y <= 0 ){
+            Physics.Y = Physics.Y - 0.00005f;
+        } else if (Physics.Y > 0 ){
+            Physics.Y = Physics.Y - (0.00005f+(Physics.Y/1000f));
+        }
         if (Physics.X < 0 ){
             Physics.X = Physics.X + 0.000015f;
         } else if (Physics.X > 0 ){
@@ -97,13 +101,13 @@ public class Player : IGameEventProcessor<object> {
 
     public void Move() {
             if (IsUpPressed == true && IsLeftPressed == true){
-                Physics.Y = Physics.Y + 0.00005f;
+                Physics.Y = Physics.Y + 0.0001f;
                 Physics.X = Physics.X - 0.0001f;
             } else if (IsUpPressed == true && IsRightPressed == true){
                 Physics.X = Physics.X + 0.0001f;
                 Physics.Y = Physics.Y + 0.0001f;
             } else if (IsUpPressed == true){
-                Physics.Y = Physics.Y + 0.00005f;
+                Physics.Y = Physics.Y + 0.0001f;
             } else if (IsLeftPressed == true){
                 Physics.X = Physics.X - 0.0001f;
             } else if (IsRightPressed == true){
