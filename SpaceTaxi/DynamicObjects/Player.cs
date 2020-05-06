@@ -96,8 +96,6 @@ public class Player : IGameEventProcessor<object> {
     }
 
     public void Move() {
-        Entity.Shape.Move();
-        Entity.Shape.AsDynamicShape().Direction = Physics;
             if (IsUpPressed == true && IsLeftPressed == true){
                 Physics.Y = Physics.Y + 0.00005f;
                 Physics.X = Physics.X - 0.0001f;
@@ -110,6 +108,8 @@ public class Player : IGameEventProcessor<object> {
                 Physics.X = Physics.X - 0.0001f;
             } else if (IsRightPressed == true){
                 Physics.X = Physics.X + 0.0001f;}
+        Entity.Shape.AsDynamicShape().Direction = Physics;
+        Entity.Shape.Move();
     }
 
     
