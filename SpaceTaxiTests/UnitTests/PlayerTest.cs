@@ -32,11 +32,6 @@ namespace UnitTests
                 
         }
 
-        [Test]
-        public void TestWork()
-        {
-            Assert.AreEqual(1,1);
-        }
 
         [Test]
         public void PlayerMoveUpTest()
@@ -44,9 +39,64 @@ namespace UnitTests
             Player.ProcessEvent(GameEventType.PlayerEvent, 
                 GameEventFactory<object>.CreateGameEventForAllProcessors(GameEventType.PlayerEvent, this, "BOOSTER_UPWARDS", "", ""));
             Player.Move();
-            Vec2F Expected = new Vec2F(0.0F,0.00005f);
+            Vec2F Expected = new Vec2F(0.0F,0.0001f);
             Assert.AreEqual(Expected.X, Player.Entity.Shape.Position.X);
             Assert.AreEqual(Expected.Y, Player.Entity.Shape.Position.Y);
+        }
+
+        [Test]
+        public void PlayerMoveLeftTest()
+        {
+            Player.ProcessEvent(GameEventType.PlayerEvent, 
+                GameEventFactory<object>.CreateGameEventForAllProcessors(GameEventType.PlayerEvent, this, "BOOSTER_TO_LEFT", "", ""));
+            Player.Move();
+            Vec2F Expected = new Vec2F(-0.0001F,0.0f);
+            Assert.AreEqual(Expected.X, Player.Entity.Shape.Position.X);
+            Assert.AreEqual(Expected.Y, Player.Entity.Shape.Position.Y);
+        }
+
+        [Test]
+        public void PlayerMoveRightTest()
+        {
+            Player.ProcessEvent(GameEventType.PlayerEvent, 
+                GameEventFactory<object>.CreateGameEventForAllProcessors(GameEventType.PlayerEvent, this, "BOOSTER_TO_RIGHT", "", ""));
+            Player.Move();
+            Vec2F Expected = new Vec2F(0.0001F,0.0f);
+            Assert.AreEqual(Expected.X, Player.Entity.Shape.Position.X);
+            Assert.AreEqual(Expected.Y, Player.Entity.Shape.Position.Y);
+        }
+
+        [Test]
+        public void PlayerMoveLeftUpTest()
+        {
+            Player.ProcessEvent(GameEventType.PlayerEvent, 
+                GameEventFactory<object>.CreateGameEventForAllProcessors(GameEventType.PlayerEvent, this, "BOOSTER_TO_LEFT", "", ""));
+            Player.ProcessEvent(GameEventType.PlayerEvent, 
+                GameEventFactory<object>.CreateGameEventForAllProcessors(GameEventType.PlayerEvent, this, "BOOSTER_UPWARDS", "", ""));
+            Player.Move();
+            Vec2F Expected = new Vec2F(-0.0001F,0.0001f);
+            Assert.AreEqual(Expected.X, Player.Entity.Shape.Position.X);
+            Assert.AreEqual(Expected.Y, Player.Entity.Shape.Position.Y);
+        }
+
+        [Test]
+        public void PlayerMoveRightUpTest()
+        {
+            Player.ProcessEvent(GameEventType.PlayerEvent, 
+                GameEventFactory<object>.CreateGameEventForAllProcessors(GameEventType.PlayerEvent, this, "BOOSTER_TO_RIGHT", "", ""));
+            Player.Move();
+            Orientation Right = (SpaceTaxi.Enums.Orientation)1;
+            Assert.AreEqual(Right, Player.Orientation);
+            }
+
+        [Test]
+        public void PlayerOrientationLeftTest()
+        {
+            Player.ProcessEvent(GameEventType.PlayerEvent, 
+                GameEventFactory<object>.CreateGameEventForAllProcessors(GameEventType.PlayerEvent, this, "BOOSTER_TO_LEFT", "", ""));
+            Player.Move();
+            Orientation Left = (SpaceTaxi.Enums.Orientation)0;
+            Assert.AreEqual(Left, Player.Orientation);
         }
     }
 }
