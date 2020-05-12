@@ -6,6 +6,7 @@ using System.Linq;
 
 namespace SpaceTaxi.LevelLoading {
     public class Reader {
+//fields
         public List<string> MapData {get; private set;}
         public List<string> NameData {get; private set;}
         public string PlatformData {get; private set;}
@@ -14,8 +15,13 @@ namespace SpaceTaxi.LevelLoading {
 
         public List<string> PngData {get; private set;}
 
+        public string[] lines{get; private set;}
+
         public string pngcharstring = "";
 
+
+/// <summary> Reads given file and seperates data in to fields </summary>
+/// <param name="filename"> Filename to be read </param>
         public void ReadFile(string filename) {
             // Get each line of file as an entry in array lines.
             string[] lines = File.ReadAllLines(Utils.GetLevelFilePath(filename));

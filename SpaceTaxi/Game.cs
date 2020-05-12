@@ -48,6 +48,8 @@ namespace SpaceTaxi {
             taxiBus.Subscribe(GameEventType.GameStateEvent, stateMachine); 
         }
 
+/// <summary> Method that creates game loop e.g. game updates </summary>
+
         public void GameLoop() {
             while (win.IsRunning()) {
                 gameTimer.MeasureTime();
@@ -73,6 +75,10 @@ namespace SpaceTaxi {
                 }
             }
         }
+
+
+/// <summary> Method that checks for keypress </summary>
+/// <returns> Returns value compared to keypress </returns>
 
         public void KeyPress(string key) {
             stateMachine.ActiveState.HandleKeyEvent(key, "KEY_PRESS");
@@ -100,8 +106,12 @@ namespace SpaceTaxi {
                         GameEventType.PlayerEvent, this, "BOOSTER_TO_RIGHT", "", ""));
                 break;
             }
+
         }
 
+
+/// <summary> Method that checks for keyrelease </summary>
+/// <returns> Returns value compared to keyrelease </returns>
         public void KeyRelease(string key) {
             stateMachine.ActiveState.HandleKeyEvent(key, "KEY_RELEASE");
             switch (key) {
@@ -123,6 +133,7 @@ namespace SpaceTaxi {
             }
         }
 
+/// <summary> Method for eventbus </summary>    
         public void ProcessEvent(GameEventType eventType, GameEvent<object> gameEvent) {
             if (eventType == GameEventType.WindowEvent) {
                 switch (gameEvent.Message) {

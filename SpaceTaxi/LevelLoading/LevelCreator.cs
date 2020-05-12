@@ -11,10 +11,10 @@ namespace SpaceTaxi.LevelLoading {
     public class LevelCreator {
 
         
-        // add fields as you see fit
+        //fields
         float xValue = 0.0f;
         float yValue = 1.0f;
-        private Reader reader;
+        public Reader reader{get; private set;}
         public Player player;
 
         List<Image> mapPics = new List<Image>();
@@ -24,18 +24,23 @@ namespace SpaceTaxi.LevelLoading {
         
         public EntityContainer<Platform> platforms = new EntityContainer<Platform>();
 
-        private char [] PngChar; 
+        public char [] PngChar{get; private set;} 
         
         private string PlatformString;
 
         private char[] Platforms;
 
-        
+/// <summary> Levelcreator method called when instiantiating the level crator </summary>
+/// <returns> reader instance </returns>
 
         public LevelCreator() {
             reader = new Reader();
         }
-        
+
+/// <summary> Method in charge of creating the level </summary>
+/// <param name="levelname"> Passes the level name on to the level </param>
+/// <returns> updated fields in level and levelreader </returns>
+
         public Level CreateLevel(string levelname) {
             // Create the Level here
             Level level = new Level(levelname);
@@ -57,6 +62,7 @@ namespace SpaceTaxi.LevelLoading {
                     if(c == PngChar[i]){
                         PngChar[i] = Convert.ToChar(0x0);
                         platformPics.Add(mapPics[i]);
+                        Console.WriteLine(PngChar);
                     }
             }
 

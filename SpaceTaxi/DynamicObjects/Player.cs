@@ -58,6 +58,8 @@ public class Player : IGameEventProcessor<object> {
         Physics = new Vec2F(0.0f, 0.0f);
     }
 
+
+/// <summary> Method in charge of gravity updates </summary>
     public void Gravity(){
         if (Physics.Y <= 0 ){
             Physics.Y = Physics.Y - 0.00005f;
@@ -70,7 +72,7 @@ public class Player : IGameEventProcessor<object> {
             Physics.X = Physics.X - 0.000015f;
         }
     }
-
+/// <summary> Method in charge of graifc updates </summary>
     public void GraficUpdate(){
         if (Orientation == (Orientation)0){
             if (IsUpPressed == true && IsLeftPressed == true){
@@ -94,11 +96,11 @@ public class Player : IGameEventProcessor<object> {
             }
         }
     }
-
+/// <summary> Method in charge of direction updates </summary>
     public void Direction(Vec2F vec) {
         Entity.Shape.AsDynamicShape().Direction = vec;
     }
-
+/// <summary> Method in charge of movement updates </summary>
     public void Move() {
             if (IsUpPressed == true && IsLeftPressed == true){
                 Physics.Y = Physics.Y + 0.0001f;

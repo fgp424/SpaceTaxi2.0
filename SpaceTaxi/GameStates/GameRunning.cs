@@ -20,6 +20,7 @@ using SpaceTaxi.StaticObjects;
 namespace SpaceTaxi.GameStates { 
     public class GameRunning : IGameState { 
 
+//fields
         private static GameRunning instance = null;
 
         private Entity backGroundImage;
@@ -34,7 +35,7 @@ namespace SpaceTaxi.GameStates {
         private LevelCreator LevelCreator2;
 
         
-
+/// <summary> Constructor that creates game running instance if not already exisiting</summary>
 
         public static GameRunning GetInstance() { 
             return GameRunning.instance ?? (GameRunning.instance = new GameRunning()); 
@@ -44,6 +45,7 @@ namespace SpaceTaxi.GameStates {
 
         }
 
+/// <summary> Method that initializes game state</summary>
         public void InitializeGameState(){
             backGroundImage = new VisualObjects(
                 new StationaryShape(new Vec2F(0.0f, 0.0f), new Vec2F(1.0f, 1.0f)),
@@ -61,12 +63,12 @@ namespace SpaceTaxi.GameStates {
             Level2 = LevelCreator2.CreateLevel("the-beach.txt");
             ActiveLevel = Level1;
         }
-
+/// <summary> Method that collects what is to be updated in the Game class</summary>
         public void UpdateGameLogic(){
             ActiveLevel.UpdateLevelLogic();
             Collision();
         }
-
+/// <summary> Method that collects what is to be rendered in the game class</summary>
         public void RenderState(){
             backGroundImage.RenderEntity();
             ActiveLevel.RenderLevelObjects();
@@ -76,7 +78,8 @@ namespace SpaceTaxi.GameStates {
         public void HandleKeyEvent(string keyValue, string keyAction){
 
         }
-
+    /// <summary> Method that creates an explosion animation </summary>
+    /// <returns> Updated animation container explosions </returns>
         public void AddExplosion(float posX, float posY,
             float extentX, float extentY) {
             explosions.AddAnimation( 
@@ -84,6 +87,7 @@ namespace SpaceTaxi.GameStates {
                 new ImageStride(explosionLength / 8, explosionStrides));
         }
 
+    /// <summary> Method that tracks collision between the player object and given objects on the map </summary>
         public void Collision(){
             foreach (Entity o in ActiveLevel.obstacles) {
                     if (DIKUArcade.Physics.CollisionDetection.Aabb(ActiveLevel.player.Entity.Shape.AsDynamicShape(), o.Shape).Collision){

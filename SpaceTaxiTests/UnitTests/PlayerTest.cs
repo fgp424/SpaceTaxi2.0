@@ -17,6 +17,9 @@ using SpaceTaxi.StaticObjects;
 
 namespace UnitTests
 {
+
+/// <summary> Test class in charge of unittesting on the player objectt </summary>
+/// <returns> Test results </returns>
     public class PlayerTest
     {
         

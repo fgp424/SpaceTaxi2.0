@@ -17,8 +17,12 @@ using SpaceTaxi.Enums;
 
 namespace SpaceTaxi.GameStates { 
     public class StateMachine : IGameEventProcessor<object> { 
+//fields
         public IGameState ActiveState { get; private set; }
         private GameEventBus<object> taxiBus;
+
+/// <summary> Statemachine constructor </summary>
+
         public StateMachine() {
             taxiBus = TaxiBus.GetBus();
             taxiBus.Subscribe(GameEventType.GameStateEvent, this); 
@@ -27,6 +31,8 @@ namespace SpaceTaxi.GameStates {
             ActiveState = MainMenu.GetInstance();
         }
 
+/// <summary> Method to change states </summary>
+/// <param name="stateType"> What state that is to be changed to </param>
         public void SwitchState(GameStateType stateType) { 
             switch (stateType) {
                 case GameStateType.GameRunning:
@@ -49,6 +55,8 @@ namespace SpaceTaxi.GameStates {
             }
         }
 
+
+/// <summary> ProcessEvent in charge of gamestateevents </summary>
         public void ProcessEvent(GameEventType eventType, GameEvent<object> gameEvent) {
             if (eventType == GameEventType.GameStateEvent) {
                     SwitchState(StateTransformer.TransformStringToState(gameEvent.Parameter1));

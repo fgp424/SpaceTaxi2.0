@@ -23,14 +23,14 @@ namespace SpaceTaxi.GameStates {
         private int activeMenuButton = 0; 
         private int maxMenuButtons;
          
-         
+/// <summary> Constructor that creates mainmenu instance if not already exisiting</summary>         
         public static MainMenu GetInstance() { 
             return MainMenu.instance ?? (MainMenu.instance = new MainMenu()); 
         }
         public void GameLoop(){
             
         }
-
+/// <summary> Method that initializes game state</summary>
         public void InitializeGameState(){
             backGroundImage = new Entity(
                 new StationaryShape(new Vec2F(0.0f, 0.0f), new Vec2F(1f, 1f)),
@@ -49,7 +49,7 @@ namespace SpaceTaxi.GameStates {
         public void UpdateGameLogic(){
             
         }
-
+/// <summary> Method that collects what is to be rendered in the game class</summary>
         public void RenderState(){
             backGroundImage.RenderEntity();
 
@@ -60,7 +60,9 @@ namespace SpaceTaxi.GameStates {
 
             
         }
-
+/// <summary> Method that handles key events in the main menu </summary>
+/// <param name="keyValue"> What value of input key </param>
+/// <param name="keyAction"> What action of inputkey</param>
         public void HandleKeyEvent(string keyValue, string keyAction){
             if (keyAction == "KEY_PRESS") {
                 switch(keyValue) {
