@@ -22,7 +22,7 @@ namespace SpaceTaxi.GameStates {
 
 //fields
         private static GameRunning instance = null;
-
+        private GameEventBus<object> taxiBus;
         private Entity backGroundImage;
         private Level ActiveLevel;
         private Level Level1;
@@ -47,6 +47,9 @@ namespace SpaceTaxi.GameStates {
 
 /// <summary> Method that initializes game state</summary>
         public void InitializeGameState(){
+
+            taxiBus = TaxiBus.GetBus();
+
             backGroundImage = new VisualObjects(
                 new StationaryShape(new Vec2F(0.0f, 0.0f), new Vec2F(1.0f, 1.0f)),
                 new Image(Path.Combine("Assets", "Images", "SpaceBackground.png"))
@@ -62,6 +65,7 @@ namespace SpaceTaxi.GameStates {
             Level1 = LevelCreator1.CreateLevel("short-n-sweet.txt");
             Level2 = LevelCreator2.CreateLevel("the-beach.txt");
             ActiveLevel = Level1;
+
         }
 /// <summary> Method that collects what is to be updated in the Game class</summary>
         public void UpdateGameLogic(){
@@ -75,9 +79,56 @@ namespace SpaceTaxi.GameStates {
             explosions.RenderAnimations();
         }
 
+/// <summary> Method that handles key events in the main menu </summary>
+/// <param name="keyValue"> What value of input key </param>
+/// <param name="keyAction"> What action of inputkey</param>
         public void HandleKeyEvent(string keyValue, string keyAction){
-
+            if (keyAction == "KEY_PRESS") {
+                switch(keyValue) {
+                case "KEY_ESCAPE":
+                    TaxiBus.GetBus().RegisterEvent(
+                            GameEventFactory<object>.CreateGameEventForAllProcessors(
+                            GameEventType.GameStateEvent, this, "CHANGE_STATE", "GAME_PAUSED", ""));
+                    break;
+                case "KEY_UP":
+                    taxiBus.RegisterEvent(
+                        GameEventFactory<object>.CreateGameEventForAllProcessors(
+                            GameEventType.PlayerEvent, this, "BOOSTER_UPWARDS", "", ""));
+                    break;
+                case "KEY_LEFT":
+                    taxiBus.RegisterEvent(
+                        GameEventFactory<object>.CreateGameEventForAllProcessors(
+                            GameEventType.PlayerEvent, this, "BOOSTER_TO_LEFT", "", ""));
+                    break;
+                case "KEY_RIGHT":
+                    taxiBus.RegisterEvent(
+                        GameEventFactory<object>.CreateGameEventForAllProcessors(
+                            GameEventType.PlayerEvent, this, "BOOSTER_TO_RIGHT", "", ""));
+                    break;
+                }
+            } else if (keyAction == "KEY_RELEASE"){ 
+                switch(keyValue) {
+                    case "KEY_LEFT":
+                        taxiBus.RegisterEvent(
+                            GameEventFactory<object>.CreateGameEventForAllProcessors(
+                                GameEventType.PlayerEvent, this, "STOP_ACCELERATE_LEFT", "", ""));
+                        break;
+                    case "KEY_RIGHT":
+                        taxiBus.RegisterEvent(
+                            GameEventFactory<object>.CreateGameEventForAllProcessors(
+                                GameEventType.PlayerEvent, this, "STOP_ACCELERATE_RIGHT", "", ""));
+                        break;
+                    case "KEY_UP":
+                        taxiBus.RegisterEvent(
+                            GameEventFactory<object>.CreateGameEventForAllProcessors(
+                                GameEventType.PlayerEvent, this, "STOP_ACCELERATE_UP", "", ""));
+                        break;
+                }
+            } else {
+                throw new System.ArgumentException("KeyState unknown");
+            }
         }
+
     /// <summary> Method that creates an explosion animation </summary>
     /// <returns> Updated animation container explosions </returns>
         public void AddExplosion(float posX, float posY,

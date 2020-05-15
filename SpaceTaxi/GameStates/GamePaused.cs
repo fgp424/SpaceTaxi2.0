@@ -84,7 +84,7 @@ namespace SpaceTaxi.GameStates {
                         } else if (activeMenuButton ==1) {
                             TaxiBus.GetBus().RegisterEvent(
                             GameEventFactory<object>.CreateGameEventForAllProcessors(
-                            GameEventType.WindowEvent, this, "GAME_MAINMENU", "", ""));
+                            GameEventType.GameStateEvent, this, "CHANGE_STATE", "GAME_MAINMENU", ""));
                         }
                         break;
                 }

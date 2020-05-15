@@ -40,7 +40,7 @@ namespace SpaceTaxi.GameStates {
                 ActiveState.InitializeGameState();
                 break;
             case GameStateType.GamePaused:
-                //ActiveState = GamePaused.GetInstance();
+                ActiveState = GamePaused.GetInstance();
                 ActiveState.InitializeGameState();
                 break;
             case GameStateType.MainMenu:

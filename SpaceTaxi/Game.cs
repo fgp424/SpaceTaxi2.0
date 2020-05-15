@@ -15,7 +15,7 @@ namespace SpaceTaxi {
     public class Game : IGameEventProcessor<object> {
         private GameEventBus<object> taxiBus;
         private GameTimer gameTimer;
-        private Window win;
+        public Window win {get; private set;} 
         private StateMachine stateMachine;
 
         public Game() {
@@ -82,30 +82,6 @@ namespace SpaceTaxi {
 
         public void KeyPress(string key) {
             stateMachine.ActiveState.HandleKeyEvent(key, "KEY_PRESS");
-            switch (key) {
-            case "KEY_ESCAPE":
-                win.CloseWindow();
-                break;
-            case "KEY_F12":
-                Console.WriteLine("Saving screenshot");
-                win.SaveScreenShot();
-                break;
-            case "KEY_UP":
-                taxiBus.RegisterEvent(
-                    GameEventFactory<object>.CreateGameEventForAllProcessors(
-                        GameEventType.PlayerEvent, this, "BOOSTER_UPWARDS", "", ""));
-                break;
-            case "KEY_LEFT":
-                taxiBus.RegisterEvent(
-                    GameEventFactory<object>.CreateGameEventForAllProcessors(
-                        GameEventType.PlayerEvent, this, "BOOSTER_TO_LEFT", "", ""));
-                break;
-            case "KEY_RIGHT":
-                taxiBus.RegisterEvent(
-                    GameEventFactory<object>.CreateGameEventForAllProcessors(
-                        GameEventType.PlayerEvent, this, "BOOSTER_TO_RIGHT", "", ""));
-                break;
-            }
 
         }
 
@@ -114,23 +90,7 @@ namespace SpaceTaxi {
 /// <returns> Returns value compared to keyrelease </returns>
         public void KeyRelease(string key) {
             stateMachine.ActiveState.HandleKeyEvent(key, "KEY_RELEASE");
-            switch (key) {
-            case "KEY_LEFT":
-                taxiBus.RegisterEvent(
-                    GameEventFactory<object>.CreateGameEventForAllProcessors(
-                        GameEventType.PlayerEvent, this, "STOP_ACCELERATE_LEFT", "", ""));
-                break;
-            case "KEY_RIGHT":
-                taxiBus.RegisterEvent(
-                    GameEventFactory<object>.CreateGameEventForAllProcessors(
-                        GameEventType.PlayerEvent, this, "STOP_ACCELERATE_RIGHT", "", ""));
-                break;
-            case "KEY_UP":
-                taxiBus.RegisterEvent(
-                    GameEventFactory<object>.CreateGameEventForAllProcessors(
-                        GameEventType.PlayerEvent, this, "STOP_ACCELERATE_UP", "", ""));
-                break;
-            }
+
         }
 
 /// <summary> Method for eventbus </summary>    
