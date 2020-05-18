@@ -33,6 +33,8 @@ namespace SpaceTaxi.GameStates {
         private LevelCreator LevelCreator1;
 
         private LevelCreator LevelCreator2;
+        private bool Gamenotready;
+        private Text Gamenotreadytext;
 
         
 /// <summary> Constructor that creates game running instance if not already exisiting</summary>
@@ -47,6 +49,9 @@ namespace SpaceTaxi.GameStates {
 
 /// <summary> Method that initializes game state</summary>
         public void InitializeGameState(){
+            Gamenotready = true;
+            Gamenotreadytext = new Text("Press space to start",new Vec2F(0.35f, 0.3f), new Vec2F(0.3f, 0.3f));
+            Gamenotreadytext.SetColor(new Vec3I(0, 255, 0));
 
             taxiBus = TaxiBus.GetBus();
 
@@ -69,14 +74,19 @@ namespace SpaceTaxi.GameStates {
         }
 /// <summary> Method that collects what is to be updated in the Game class</summary>
         public void UpdateGameLogic(){
-            ActiveLevel.UpdateLevelLogic();
-            Collision();
+            if (Gamenotready == false){
+                ActiveLevel.UpdateLevelLogic();
+                Collision();
+            }
         }
 /// <summary> Method that collects what is to be rendered in the game class</summary>
         public void RenderState(){
-            backGroundImage.RenderEntity();
-            ActiveLevel.RenderLevelObjects();
-            explosions.RenderAnimations();
+                backGroundImage.RenderEntity();
+                ActiveLevel.RenderLevelObjects();
+                explosions.RenderAnimations();
+            if (Gamenotready == true ){
+                Gamenotreadytext.RenderText();
+            }
         }
 
 /// <summary> Method that handles key events in the main menu </summary>
@@ -104,6 +114,9 @@ namespace SpaceTaxi.GameStates {
                     taxiBus.RegisterEvent(
                         GameEventFactory<object>.CreateGameEventForAllProcessors(
                             GameEventType.PlayerEvent, this, "BOOSTER_TO_RIGHT", "", ""));
+                    break;
+                case "KEY_SPACE":
+                    Gamenotready = false;
                     break;
                 }
             } else if (keyAction == "KEY_RELEASE"){ 
