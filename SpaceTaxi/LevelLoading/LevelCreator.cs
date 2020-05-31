@@ -6,6 +6,7 @@ using DIKUArcade.Entities;
 using DIKUArcade.Math;
 using SpaceTaxi.StaticObjects;
 using SpaceTaxi.Enums;
+using System.Linq;
 
 namespace SpaceTaxi.LevelLoading {
     public class LevelCreator {
@@ -28,7 +29,7 @@ namespace SpaceTaxi.LevelLoading {
         
         private string PlatformString;
 
-        private char[] Platforms;
+        public char[] Platforms{get; private set;}
 
 /// <summary> Levelcreator method called when instiantiating the level crator </summary>
 /// <returns> reader instance </returns>
@@ -62,7 +63,6 @@ namespace SpaceTaxi.LevelLoading {
                     if(c == PngChar[i]){
                         PngChar[i] = Convert.ToChar(0x0);
                         platformPics.Add(mapPics[i]);
-                        Console.WriteLine(PngChar);
                     }
             }
 
@@ -89,9 +89,10 @@ namespace SpaceTaxi.LevelLoading {
                     }
                     for (int i = 0; i<Platforms.Length; i++){
                         if (Platforms[i] == c){
-                            level.platforms.AddStationaryEntity(new Platform(
+                            level.speratedplatforms[i].AddStationaryEntity(new Platform(
                                 new StationaryShape(new Vec2F(xValue, yValue), new Vec2F((1.0f/40.0f), (1.0f/23.0f))), 
                                 platformPics[i]));
+                            
                         }
                     }
                     

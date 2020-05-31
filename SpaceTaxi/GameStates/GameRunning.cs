@@ -1,4 +1,3 @@
-
 using System;
 using System.IO;
 using System.Collections.Generic;
@@ -14,6 +13,7 @@ using DIKUArcade.State;
 using DIKUArcade.Utilities;
 using SpaceTaxi.LevelLoading;
 using SpaceTaxi.StaticObjects;
+using SpaceTaxi.qq;
 
 
 
@@ -34,7 +34,9 @@ namespace SpaceTaxi.GameStates {
 
         private LevelCreator LevelCreator2;
         private bool Gamenotready;
-        private Text Gamenotreadytext;
+        private Text Gamenotreadytext1;
+        private Text Gamenotreadytext2;
+        private Timer timer;
 
         
 /// <summary> Constructor that creates game running instance if not already exisiting</summary>
@@ -50,8 +52,11 @@ namespace SpaceTaxi.GameStates {
 /// <summary> Method that initializes game state</summary>
         public void InitializeGameState(){
             Gamenotready = true;
-            Gamenotreadytext = new Text("Press space to start",new Vec2F(0.35f, 0.3f), new Vec2F(0.3f, 0.3f));
-            Gamenotreadytext.SetColor(new Vec3I(0, 255, 0));
+            Gamenotreadytext1 = new Text("Press space to",new Vec2F(0.35f, 0.3f), new Vec2F(0.3f, 0.3f));
+            Gamenotreadytext1.SetColor(new Vec3I(0, 255, 0));
+
+            Gamenotreadytext2 = new Text("start",new Vec2F(0.45f, 0.25f), new Vec2F(0.3f, 0.3f));
+            Gamenotreadytext2.SetColor(new Vec3I(0, 255, 0));
 
             taxiBus = TaxiBus.GetBus();
 
@@ -63,6 +68,8 @@ namespace SpaceTaxi.GameStates {
             explosionStrides = ImageStride.CreateStrides(8,
                 Path.Combine("Assets", "Images", "Explosion.png"));
             explosions = new AnimationContainer(10);
+
+            timer = new Timer(new Vec2F(0.8f, -0.18f), new Vec2F(0.3f, 0.3f));
 
             LevelCreator1 = new LevelCreator();
             LevelCreator2 = new LevelCreator();
@@ -77,6 +84,7 @@ namespace SpaceTaxi.GameStates {
             if (Gamenotready == false){
                 ActiveLevel.UpdateLevelLogic();
                 Collision();
+                timer.AddTime();
             }
         }
 /// <summary> Method that collects what is to be rendered in the game class</summary>
@@ -84,8 +92,10 @@ namespace SpaceTaxi.GameStates {
                 backGroundImage.RenderEntity();
                 ActiveLevel.RenderLevelObjects();
                 explosions.RenderAnimations();
+                timer.RenderTimer();
             if (Gamenotready == true ){
-                Gamenotreadytext.RenderText();
+                Gamenotreadytext1.RenderText();
+                Gamenotreadytext2.RenderText();
             }
         }
 
@@ -161,11 +171,15 @@ namespace SpaceTaxi.GameStates {
                     }
             }
 
-            foreach (Entity e in ActiveLevel.platforms) {
-                    if (DIKUArcade.Physics.CollisionDetection.Aabb(ActiveLevel.player.Entity.Shape.AsDynamicShape(), e.Shape).Collision){
+            foreach (EntityContainer<Platform> e in ActiveLevel.speratedplatforms) {
+                foreach (Platform p in e){
+                    if (DIKUArcade.Physics.CollisionDetection.Aabb(ActiveLevel.player.Entity.Shape.AsDynamicShape(), p.Shape).Collision){
                         if(ActiveLevel.player.Physics.Y > -0.004f){
                             ActiveLevel.player.Physics.Y = 0.0f;
                             ActiveLevel.player.Physics.X = 0.0f;
+
+                            Console.WriteLine(LevelCreator2.Platforms[ActiveLevel.speratedplatforms.IndexOf(e)]);
+                            
                         }
                         else{
                             ActiveLevel.player.Entity.DeleteEntity();
@@ -173,6 +187,7 @@ namespace SpaceTaxi.GameStates {
                             ActiveLevel.player.Entity.Shape.Position = new Vec2F(5.0f,5.0f);
                         }
                     }
+                }
             }
             foreach (Entity p in ActiveLevel.portal) {
                     if (DIKUArcade.Physics.CollisionDetection.Aabb(ActiveLevel.player.Entity.Shape.AsDynamicShape(), p.Shape).Collision){
