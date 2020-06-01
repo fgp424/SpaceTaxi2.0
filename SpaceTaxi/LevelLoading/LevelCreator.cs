@@ -18,12 +18,10 @@ namespace SpaceTaxi.LevelLoading {
         public Reader reader{get; private set;}
         public Player player;
 
+        public List<Customer> CustomerList = new List<Customer>();
+
         List<Image> mapPics = new List<Image>();
         List<Image> platformPics = new List<Image>();
-
-        public EntityContainer<VisualObjects> mapGrafics = new EntityContainer<VisualObjects>();
-        
-        public EntityContainer<Platform> platforms = new EntityContainer<Platform>();
 
         public char [] PngChar{get; private set;} 
         
@@ -31,10 +29,9 @@ namespace SpaceTaxi.LevelLoading {
 
         public char[] Platforms{get; private set;}
         private List<string> customerString = new List<string>();
-        private List<List<string>> CustomerList = new List<List<string>>();
 
-        private string CustomerStringTemp;
-        public string[] CustomerStrings{get; private set;}
+        public Vec2F rand;
+        public Vec2F rand1;
 
 /// <summary> Levelcreator method called when instiantiating the level crator </summary>
 /// <returns> reader instance </returns>
@@ -66,11 +63,16 @@ namespace SpaceTaxi.LevelLoading {
 
 
             foreach(string s in reader.CustomerData){
-                customerString.Add(s.Remove(0, 9));
+                customerString.Add(s.Remove(0, 10));
             }
-
+            rand = new Vec2F(0.5f,0.5f);
+            rand1 = new Vec2F(0.1f,0.1f);
             foreach(string s in customerString){
                 Console.WriteLine(s);
+                string[] temp = s.Split(null);
+                rand = rand + rand1;
+                level.CustomerList.Add(new Customer(new DynamicShape(rand, new Vec2F((.05f), (.05f))), 
+                            new Image(Path.Combine("Assets", "Images", "CustomerStandRight.png")), temp[0], temp[2], temp[3], Convert.ToDouble(temp[4]), Convert.ToDouble(temp[5])));
             }
 
             Console.WriteLine(); 

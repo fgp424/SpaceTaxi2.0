@@ -18,6 +18,7 @@ namespace SpaceTaxi.LevelLoading {
         public EntityContainer<Customer> customers = new EntityContainer<Customer>();
         public List<double> customerTimers = new List<double>();
         public char[] Platforms;
+        public List<Customer> CustomerList = new List<Customer>();
 
         public Player player;
         public string name;
@@ -52,6 +53,9 @@ namespace SpaceTaxi.LevelLoading {
                 foreach (Platform p in e){
                     p.RenderEntity();
                 }
+            }
+            foreach(Customer c in CustomerList){
+                c.RenderEntity();
             }
             obstacles.RenderEntities();
         }

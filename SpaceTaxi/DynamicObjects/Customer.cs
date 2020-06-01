@@ -21,10 +21,10 @@ public class Customer : Entity{
     public float bounderyright{get; private set;}
     public string name{get; private set;}
     public float spawntimer{get; private set;}
-    public char currentplatform{get; private set;}
+    public string currentplatform{get; private set;}
     public string destinationplatform{get; private set;}
-    public float dropofftimer{get; private set;}
-    public float points{get; private set;}
+    public double dropofftimer{get; private set;}
+    public double points{get; private set;}
     public bool isSpawned{get; private set;}
     private IBaseImage standRight;
     private IBaseImage standLeft;
@@ -32,8 +32,8 @@ public class Customer : Entity{
     private IBaseImage walkLeft;
     
 
-    public Customer(DynamicShape shape, IBaseImage image, string Name, char Currentplatform, string Destinationplatform,
-        float Dropofftimer, float Points) : base(shape, image){
+    public Customer(DynamicShape shape, IBaseImage image, string Name, string Currentplatform, string Destinationplatform,
+        double Dropofftimer, double Points) : base(shape, image){
         
         standRight = new Image(Path.Combine("Assets", "Images", "CustomerStandRight.png"));
         standLeft= new Image(Path.Combine("Assets", "Images", "CustomerStandLeft.png"));
@@ -41,8 +41,7 @@ public class Customer : Entity{
         walkRight = new ImageStride(80,ImageStride.CreateStrides(2, Path.Combine("Assets", "Images", "CustomerWalkRight.png")));
         walkLeft = new ImageStride(80,ImageStride.CreateStrides(2, Path.Combine("Assets", "Images", "CustomerWalkLeft.png")));
         
-        position.X = 5.0f;
-        position.Y = 5.0f;
+        position = new Vec2F(5f,5f);
         
         
         shape = new DynamicShape(position.X, position.Y, 0.05f, 0.1f);
