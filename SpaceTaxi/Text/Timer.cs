@@ -20,7 +20,7 @@ namespace SpaceTaxi.qq {
 
     public class Timer{
         private double time; 
-        private double timefloor;
+        public double timefloor{get; private set;}
         private Text display;
 
         ///<summary> Constructor that creates timer instance </summary>
@@ -38,7 +38,7 @@ namespace SpaceTaxi.qq {
             timefloor = Math.Floor(time);
         }
 
-        ///<summary> Method RenderTimer, display the score on screen </summary>
+        ///<summary> Method RenderTimer, display the timer on screen </summary>
         ///<returns> the rendered time </returns>
         public void RenderTimer() { 
             display.SetText(string.Format("Timer: {0}", timefloor.ToString())); 

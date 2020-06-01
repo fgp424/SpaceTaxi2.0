@@ -14,8 +14,11 @@ namespace SpaceTaxi.LevelLoading {
         public EntityContainer<Platform> platforms0 = new EntityContainer<Platform>();
         public EntityContainer<Platform> platforms1 = new EntityContainer<Platform>();
         public EntityContainer<Platform> platforms2 = new EntityContainer<Platform>();
-
         public EntityContainer<VisualObjects> portal = new EntityContainer<VisualObjects>();
+        public EntityContainer<Customer> customers = new EntityContainer<Customer>();
+        public List<double> customerTimers = new List<double>();
+        public char[] Platforms;
+
         public Player player;
         public string name;
         public Vec2F startpos;

@@ -30,6 +30,11 @@ namespace SpaceTaxi.LevelLoading {
         private string PlatformString;
 
         public char[] Platforms{get; private set;}
+        private List<string> customerString = new List<string>();
+        private List<List<string>> CustomerList = new List<List<string>>();
+
+        private string CustomerStringTemp;
+        public string[] CustomerStrings{get; private set;}
 
 /// <summary> Levelcreator method called when instiantiating the level crator </summary>
 /// <returns> reader instance </returns>
@@ -57,6 +62,20 @@ namespace SpaceTaxi.LevelLoading {
             PlatformString = PlatformString.Replace(",", "");
             PlatformString = PlatformString.Replace(" ", "");
             Platforms = PlatformString.ToCharArray();
+            level.Platforms = Platforms;
+
+
+            foreach(string s in reader.CustomerData){
+                customerString.Add(s.Remove(0, 9));
+            }
+
+            foreach(string s in customerString){
+                Console.WriteLine(s);
+            }
+
+            Console.WriteLine(); 
+
+
 
             foreach (char c in Platforms){
                 for(int i = 0; i<PngChar.Length; i++)

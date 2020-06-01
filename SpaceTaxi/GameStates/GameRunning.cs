@@ -37,6 +37,8 @@ namespace SpaceTaxi.GameStates {
         private Text Gamenotreadytext1;
         private Text Gamenotreadytext2;
         private Timer timer;
+        private Score score;
+        private List<Level> levels = new List<Level>();
 
         
 /// <summary> Constructor that creates game running instance if not already exisiting</summary>
@@ -69,14 +71,19 @@ namespace SpaceTaxi.GameStates {
                 Path.Combine("Assets", "Images", "Explosion.png"));
             explosions = new AnimationContainer(10);
 
+            score = new Score(new Vec2F(0.7972f, -0.1f), new Vec2F(0.3f, 0.3f));
             timer = new Timer(new Vec2F(0.8f, -0.18f), new Vec2F(0.3f, 0.3f));
 
             LevelCreator1 = new LevelCreator();
             LevelCreator2 = new LevelCreator();
 
+
             Level1 = LevelCreator1.CreateLevel("short-n-sweet.txt");
             Level2 = LevelCreator2.CreateLevel("the-beach.txt");
             ActiveLevel = Level1;
+
+            levels.Add(Level1);
+            levels.Add(Level2);
 
         }
 /// <summary> Method that collects what is to be updated in the Game class</summary>
@@ -85,6 +92,7 @@ namespace SpaceTaxi.GameStates {
                 ActiveLevel.UpdateLevelLogic();
                 Collision();
                 timer.AddTime();
+                score.AddScore(0.02);
             }
         }
 /// <summary> Method that collects what is to be rendered in the game class</summary>
@@ -92,6 +100,7 @@ namespace SpaceTaxi.GameStates {
                 backGroundImage.RenderEntity();
                 ActiveLevel.RenderLevelObjects();
                 explosions.RenderAnimations();
+                score.RenderScore();
                 timer.RenderTimer();
             if (Gamenotready == true ){
                 Gamenotreadytext1.RenderText();
@@ -178,7 +187,7 @@ namespace SpaceTaxi.GameStates {
                             ActiveLevel.player.Physics.Y = 0.0f;
                             ActiveLevel.player.Physics.X = 0.0f;
 
-                            Console.WriteLine(LevelCreator2.Platforms[ActiveLevel.speratedplatforms.IndexOf(e)]);
+                            Console.WriteLine(ActiveLevel.Platforms[ActiveLevel.speratedplatforms.IndexOf(e)]);
                             
                         }
                         else{
