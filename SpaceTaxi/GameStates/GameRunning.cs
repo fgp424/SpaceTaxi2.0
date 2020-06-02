@@ -211,9 +211,14 @@ namespace SpaceTaxi.GameStates {
         public void Collision(){
 
             foreach (Customer c in ActiveLevel.CustomerList){
+
+                //System.Console.WriteLine(ActiveLevel.player.Entity.Shape.Position);
+                //System.Console.WriteLine(c.Shape.Position);
+                //System.Console.WriteLine(ActiveLevel.player.Entity.Shape.AsDynamicShape().Direction);
+                //System.Console.WriteLine();
                               
-                if (DIKUArcade.Physics.CollisionDetection.Aabb(ActiveLevel.player.Entity.Shape.AsDynamicShape(), c.Shape).Collision){ 
-                    Console.Write("qq");
+                if (DIKUArcade.Physics.CollisionDetection.Aabb(c.Shape.AsDynamicShape(), ActiveLevel.player.Entity.Shape).Collision){ 
+                    c.PickedUp();
                 }
             }
 

@@ -47,7 +47,6 @@ public class Customer : Entity{
         walkLeft = new ImageStride(80,ImageStride.CreateStrides(2, Path.Combine("Assets", "Images", "CustomerWalkLeft.png")));
                 
         
-        
         image = standRight;
         orientation = (Orientation)1;
 
@@ -88,10 +87,12 @@ public class Customer : Entity{
     public void Move(float x){
         if(Shape.Position.X > x){
             Shape.Position.X = Shape.Position.X - 0.001f;
+            Shape.AsDynamicShape().Direction = new Vec2F(-0.001f, 0.00f);
             Image = walkLeft;
             orientation = (Orientation)0;
         } else if(Shape.Position.X < x){
             Shape.Position.X = Shape.Position.X + 0.001f;
+            Shape.AsDynamicShape().Direction = new Vec2F(0.001f, 0.00f);
             Image = walkRight;
             orientation = (Orientation)1;
         }
