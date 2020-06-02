@@ -28,7 +28,7 @@ public class Customer : Entity{
     public bool isSpawned{get; private set;}
     public bool HasSpawned{get; private set;}
     public bool dropoffLevelNext{get; private set;}
-    private DynamicShape shape;
+
     private IBaseImage standRight;
     private IBaseImage standLeft;
     private IBaseImage walkRight;
@@ -47,7 +47,6 @@ public class Customer : Entity{
         walkLeft = new ImageStride(80,ImageStride.CreateStrides(2, Path.Combine("Assets", "Images", "CustomerWalkLeft.png")));
                 
         
-        shape = Shape;
         
         image = standRight;
         orientation = (Orientation)1;
@@ -73,21 +72,37 @@ public class Customer : Entity{
             dropoffLevelNext = true;
             destinationplatform.Replace("^", "");
         }
-        
-
-
+    }
+    public void PickedUp(){
+        Shape.Position = new Vec2F(5.0f, 5.0f);
     }
 
     public void Spawn(Vec2F Startpos){
-        shape.Position.X = Startpos.X;
-        shape.Position.Y = Startpos.Y;
+        Shape.Position.X = Startpos.X;
+        Shape.Position.Y = Startpos.Y;
     }
     public void Bounderies(float Bounderyleft, float Bounderyright){
         bounderyleft = Bounderyleft;
         bounderyright = Bounderyright;
     }
-    public void Move(){
-        
+    public void Move(float x){
+        if(Shape.Position.X > x){
+            Shape.Position.X = Shape.Position.X - 0.001f;
+            Image = walkLeft;
+            orientation = (Orientation)0;
+        } else if(Shape.Position.X < x){
+            Shape.Position.X = Shape.Position.X + 0.001f;
+            Image = walkRight;
+            orientation = (Orientation)1;
+        }
+    }
+
+    public void StopMove(){
+        if (orientation == (Orientation)1){
+            Image = standRight;
+        } else if (orientation == (Orientation)0){
+            Image = standLeft;
+        }
     }
 
     public void Spawned(){

@@ -74,7 +74,7 @@ namespace SpaceTaxi.LevelLoading {
             foreach(string s in customerString){
                 Console.WriteLine(s);
                 string[] temp = s.Split(null);
-                level.CustomerList.Add(new Customer(new DynamicShape(new Vec2F(5.0f,5.0f), new Vec2F((.05f), (.1f))), 
+                level.CustomerList.Add(new Customer(new DynamicShape(new Vec2F(5.0f,5.0f), new Vec2F((0.1f), (0.05f))), 
                             new Image(Path.Combine("Assets", "Images", "CustomerStandRight.png")), temp[0], temp[2], temp[3], Convert.ToDouble(temp[4]), Convert.ToDouble(temp[5]), Convert.ToDouble(temp[1])));
             }
 

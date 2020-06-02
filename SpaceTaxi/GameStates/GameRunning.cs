@@ -96,7 +96,12 @@ namespace SpaceTaxi.GameStates {
                 timer.AddTime();
                 foreach(Customer c in ActiveLevel.CustomerList){
                     c.Timer();
-                }
+                    if (MathF.Round(c.Shape.Position.Y, 3) == MathF.Round(ActiveLevel.player.Entity.Shape.Position.Y, 3)){
+                        c.Move(ActiveLevel.player.Entity.Shape.Position.X);
+                    } else {
+                        c.StopMove();
+                    }
+                }           
             }
         }
 /// <summary> Method that collects what is to be rendered in the game class</summary>
@@ -204,6 +209,14 @@ namespace SpaceTaxi.GameStates {
         }
     /// <summary> Method that tracks collision between the player object and given objects on the map </summary>
         public void Collision(){
+
+            foreach (Customer c in ActiveLevel.CustomerList){
+                              
+                if (DIKUArcade.Physics.CollisionDetection.Aabb(ActiveLevel.player.Entity.Shape.AsDynamicShape(), c.Shape).Collision){ 
+                    Console.Write("qq");
+                }
+            }
+
             foreach (Entity o in ActiveLevel.obstacles) {
                     if (DIKUArcade.Physics.CollisionDetection.Aabb(ActiveLevel.player.Entity.Shape.AsDynamicShape(), o.Shape).Collision){
                         ActiveLevel.player.Entity.DeleteEntity();
@@ -220,9 +233,16 @@ namespace SpaceTaxi.GameStates {
                             ActiveLevel.player.Physics.X = 0.0f;
 
                             //Console.WriteLine(ActiveLevel.Platforms[ActiveLevel.speratedplatforms.IndexOf(e)]);
+                            foreach (Customer c in ActiveLevel.CustomerList){
+                                char[] tempcharlist = c.currentplatform.ToCharArray();
+                                char tempc = tempcharlist[0];
+                                if(c.isSpawned){
+                                    if (tempc == ActiveLevel.Platforms[ActiveLevel.speratedplatforms.IndexOf(e)]){
+                                    }
+                                } 
+                            }
                             
-                        }
-                        else{
+                        } else{
                             ActiveLevel.player.Entity.DeleteEntity();
                             AddExplosion(ActiveLevel.player.Entity.Shape.Position.X-0.05f, ActiveLevel.player.Entity.Shape.Position.Y-0.05f,0.2f,0.2f);
                             ActiveLevel.player.Entity.Shape.Position = new Vec2F(5.0f,5.0f);
@@ -230,6 +250,8 @@ namespace SpaceTaxi.GameStates {
                     }
                 }
             }
+
+
             foreach (Entity p in ActiveLevel.portal) {
                     if (DIKUArcade.Physics.CollisionDetection.Aabb(ActiveLevel.player.Entity.Shape.AsDynamicShape(), p.Shape).Collision){
                         if (ActiveLevel == Level1){
