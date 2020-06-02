@@ -61,6 +61,10 @@ namespace SpaceTaxi.LevelLoading {
             Platforms = PlatformString.ToCharArray();
             level.Platforms = Platforms;
 
+            for(int i=0; i< Platforms.Length+1; i++){
+                level.speratedplatforms.Add(new EntityContainer<Platform>());
+            }
+
 
             foreach(string s in reader.CustomerData){
                 customerString.Add(s.Remove(0, 10));
@@ -70,9 +74,8 @@ namespace SpaceTaxi.LevelLoading {
             foreach(string s in customerString){
                 Console.WriteLine(s);
                 string[] temp = s.Split(null);
-                rand = rand + rand1;
-                level.CustomerList.Add(new Customer(new DynamicShape(rand, new Vec2F((.05f), (.05f))), 
-                            new Image(Path.Combine("Assets", "Images", "CustomerStandRight.png")), temp[0], temp[2], temp[3], Convert.ToDouble(temp[4]), Convert.ToDouble(temp[5])));
+                level.CustomerList.Add(new Customer(new DynamicShape(new Vec2F(5.0f,5.0f), new Vec2F((.05f), (.1f))), 
+                            new Image(Path.Combine("Assets", "Images", "CustomerStandRight.png")), temp[0], temp[2], temp[3], Convert.ToDouble(temp[4]), Convert.ToDouble(temp[5]), Convert.ToDouble(temp[1])));
             }
 
             Console.WriteLine(); 

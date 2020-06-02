@@ -38,7 +38,7 @@ namespace SpaceTaxi {
             win.RegisterEventBus(taxiBus);
 
             // game timer
-            gameTimer = new GameTimer(60); // 60 UPS, no FPS limit
+            gameTimer = new GameTimer(180); // 60 UPS, no FPS limit
 
             // game assets
 

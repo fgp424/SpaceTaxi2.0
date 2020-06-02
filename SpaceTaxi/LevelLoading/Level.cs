@@ -11,12 +11,7 @@ namespace SpaceTaxi.LevelLoading {
         public EntityContainer<VisualObjects> obstacles = new EntityContainer<VisualObjects>();
 
         public List<EntityContainer<Platform>> speratedplatforms = new List<EntityContainer<Platform>>();
-        public EntityContainer<Platform> platforms0 = new EntityContainer<Platform>();
-        public EntityContainer<Platform> platforms1 = new EntityContainer<Platform>();
-        public EntityContainer<Platform> platforms2 = new EntityContainer<Platform>();
         public EntityContainer<VisualObjects> portal = new EntityContainer<VisualObjects>();
-        public EntityContainer<Customer> customers = new EntityContainer<Customer>();
-        public List<double> customerTimers = new List<double>();
         public char[] Platforms;
         public List<Customer> CustomerList = new List<Customer>();
 
@@ -28,10 +23,8 @@ namespace SpaceTaxi.LevelLoading {
 /// <param name="Name"> Defines name of the level </param>
         public Level(string Name) { 
             name = Name;
-            speratedplatforms.Add(platforms0);
-            speratedplatforms.Add(platforms1);
-            speratedplatforms.Add(platforms2);
-            
+            Console.WriteLine(Platforms);
+
         }
 
 
@@ -54,9 +47,14 @@ namespace SpaceTaxi.LevelLoading {
                     p.RenderEntity();
                 }
             }
+
+
             foreach(Customer c in CustomerList){
                 c.RenderEntity();
             }
+
+
+
             obstacles.RenderEntities();
         }
     }

@@ -20,31 +20,35 @@ public class Customer : Entity{
     public float bounderyleft{get; private set;}
     public float bounderyright{get; private set;}
     public string name{get; private set;}
-    public float spawntimer{get; private set;}
+    public double spawntimer{get; private set;}
     public string currentplatform{get; private set;}
     public string destinationplatform{get; private set;}
     public double dropofftimer{get; private set;}
     public double points{get; private set;}
     public bool isSpawned{get; private set;}
+    public bool HasSpawned{get; private set;}
+    public bool dropoffLevelNext{get; private set;}
+    private DynamicShape shape;
     private IBaseImage standRight;
     private IBaseImage standLeft;
     private IBaseImage walkRight;
     private IBaseImage walkLeft;
     
 
-    public Customer(DynamicShape shape, IBaseImage image, string Name, string Currentplatform, string Destinationplatform,
-        double Dropofftimer, double Points) : base(shape, image){
-        
+    public Customer(DynamicShape Shape, IBaseImage image, string Name, string Currentplatform, string Destinationplatform,
+        double Dropofftimer, double Points, double Spawntimer) : base(Shape, image){
+
+        dropoffLevelNext = false;
+
         standRight = new Image(Path.Combine("Assets", "Images", "CustomerStandRight.png"));
         standLeft= new Image(Path.Combine("Assets", "Images", "CustomerStandLeft.png"));
 
         walkRight = new ImageStride(80,ImageStride.CreateStrides(2, Path.Combine("Assets", "Images", "CustomerWalkRight.png")));
         walkLeft = new ImageStride(80,ImageStride.CreateStrides(2, Path.Combine("Assets", "Images", "CustomerWalkLeft.png")));
+                
         
-        position = new Vec2F(5f,5f);
+        shape = Shape;
         
-        
-        shape = new DynamicShape(position.X, position.Y, 0.05f, 0.1f);
         image = standRight;
         orientation = (Orientation)1;
 
@@ -53,14 +57,30 @@ public class Customer : Entity{
         destinationplatform = Destinationplatform;
         points = Points;
         name = Name;
+        spawntimer = Spawntimer;
         
         isSpawned = false;
+
+        HasSpawned = false;
+
+        Console.WriteLine(HasSpawned);
+
+
+        if(destinationplatform == "^"){
+            dropoffLevelNext = true;
+            destinationplatform.Replace("^", "");
+        } else if(destinationplatform.Contains("^")){
+            dropoffLevelNext = true;
+            destinationplatform.Replace("^", "");
+        }
+        
+
 
     }
 
     public void Spawn(Vec2F Startpos){
-        position.X = Startpos.X;
-        position.Y = Startpos.Y;
+        shape.Position.X = Startpos.X;
+        shape.Position.Y = Startpos.Y;
     }
     public void Bounderies(float Bounderyleft, float Bounderyright){
         bounderyleft = Bounderyleft;
@@ -70,8 +90,13 @@ public class Customer : Entity{
         
     }
 
+    public void Spawned(){
+        HasSpawned = true;
+    }
     public void Timer(){
-        spawntimer = spawntimer - 1f/60f;
+        if(spawntimer >= 0){
+            spawntimer = spawntimer - 1f/60f;
+        }
         if(spawntimer <= 0){
             isSpawned = true;
         }

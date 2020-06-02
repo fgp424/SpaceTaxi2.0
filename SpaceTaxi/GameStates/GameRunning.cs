@@ -14,6 +14,7 @@ using DIKUArcade.Utilities;
 using SpaceTaxi.LevelLoading;
 using SpaceTaxi.StaticObjects;
 using SpaceTaxi.qq;
+using System.Linq;
 
 
 
@@ -88,11 +89,14 @@ namespace SpaceTaxi.GameStates {
         }
 /// <summary> Method that collects what is to be updated in the Game class</summary>
         public void UpdateGameLogic(){
-            if (Gamenotready == false){
+            if (!Gamenotready){
                 ActiveLevel.UpdateLevelLogic();
                 Collision();
+                CustomerSpawned();
                 timer.AddTime();
-                score.AddScore(0.02);
+                foreach(Customer c in ActiveLevel.CustomerList){
+                    c.Timer();
+                }
             }
         }
 /// <summary> Method that collects what is to be rendered in the game class</summary>
@@ -102,11 +106,17 @@ namespace SpaceTaxi.GameStates {
                 explosions.RenderAnimations();
                 score.RenderScore();
                 timer.RenderTimer();
+                foreach(Customer c in ActiveLevel.CustomerList){
+                    c.RenderEntity();
+                }
             if (Gamenotready == true ){
                 Gamenotreadytext1.RenderText();
                 Gamenotreadytext2.RenderText();
             }
         }
+
+
+
 
 /// <summary> Method that handles key events in the main menu </summary>
 /// <param name="keyValue"> What value of input key </param>
@@ -170,6 +180,28 @@ namespace SpaceTaxi.GameStates {
                 new ImageStride(explosionLength / 8, explosionStrides));
         }
 
+
+
+
+        public void CustomerSpawned(){
+            foreach(Customer c in ActiveLevel.CustomerList){
+                if (c.isSpawned){
+                    if(!c.HasSpawned){
+                        char[] temp = c.currentplatform.ToCharArray();
+                        char tempc = temp[0];
+                        var tempindex = ActiveLevel.Platforms.ToList().FindIndex( q => q == tempc);
+                        var tempcontainer = ActiveLevel.speratedplatforms[tempindex].GetEnumerator();
+                        tempcontainer.MoveNext();
+                        tempcontainer.MoveNext();
+                        tempcontainer.MoveNext();
+                        Platform e = (Platform) tempcontainer.Current;
+                        c.Spawned();
+                        c.Spawn(e.Entity.Shape.Position + (new Vec2F(0.0f, (1f/23f))));
+                        Console.WriteLine(e.Entity.Shape.Position);
+                    }
+                }
+            }
+        }
     /// <summary> Method that tracks collision between the player object and given objects on the map </summary>
         public void Collision(){
             foreach (Entity o in ActiveLevel.obstacles) {
@@ -187,7 +219,7 @@ namespace SpaceTaxi.GameStates {
                             ActiveLevel.player.Physics.Y = 0.0f;
                             ActiveLevel.player.Physics.X = 0.0f;
 
-                            Console.WriteLine(ActiveLevel.Platforms[ActiveLevel.speratedplatforms.IndexOf(e)]);
+                            //Console.WriteLine(ActiveLevel.Platforms[ActiveLevel.speratedplatforms.IndexOf(e)]);
                             
                         }
                         else{
