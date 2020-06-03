@@ -82,14 +82,9 @@ public class Customer : Entity{
             dropoffLevelNext = true;
             dropOffAny = true;
             destinationplatform.Replace("^", "");
-
-            System.Console.WriteLine(dropOffAny);
-            System.Console.WriteLine(destinationplatform);
         } else if(destinationplatform.Contains("^")){
             dropoffLevelNext = true;
-            System.Console.WriteLine(dropOffAny);
-            System.Console.WriteLine(destinationplatform);
-            destinationplatform.Replace("^", "");
+            destinationplatform = destinationplatform.Replace("^", "");
         }
     }
 
@@ -133,6 +128,11 @@ public class Customer : Entity{
     }
     public void dropOff(){
             isDroppedOff = true;
+            pickedUp = false;
+    }
+
+    public void dropOffReset(){
+        isDroppedOff = false;
     }
 
     public void StopMove(){
@@ -154,7 +154,7 @@ public class Customer : Entity{
             isSpawned = true;
         }
         dropofftimer = dropofftimer - 1f/60f;
-        if(dropofftimer < 0){
+        if(isSpawned){
             points = points - 10f/60f;
         }
     }

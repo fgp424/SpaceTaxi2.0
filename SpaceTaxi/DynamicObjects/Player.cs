@@ -29,7 +29,6 @@ public class Player : IGameEventProcessor<object> {
     private IBaseImage LEFT;
     private IBaseImage NONERIGHT;
     private IBaseImage NONELEFT;
-    public string customerName{get; private set;}
     public bool hasCustomer{get; private set;}
     private bool IsUpPressed = false;
     private bool IsLeftPressed = false;

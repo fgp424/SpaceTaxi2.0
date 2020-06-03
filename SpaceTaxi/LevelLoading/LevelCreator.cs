@@ -25,7 +25,7 @@ namespace SpaceTaxi.LevelLoading {
 
         public char [] PngChar{get; private set;} 
         
-        private string PlatformString;
+        public string PlatformString{get; private set;}
 
         public char[] Platforms{get; private set;}
         private List<string> customerString = new List<string>();
@@ -61,7 +61,9 @@ namespace SpaceTaxi.LevelLoading {
             Platforms = PlatformString.ToCharArray();
             level.Platforms = Platforms;
 
-            for(int i=0; i< Platforms.Length+1; i++){
+            System.Console.WriteLine(Platforms.Length);
+
+            for(int i=0; i < Platforms.Length; i++){
                 level.speratedplatforms.Add(new EntityContainer<Platform>());
             }
 

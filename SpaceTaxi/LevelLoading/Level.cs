@@ -22,8 +22,6 @@ namespace SpaceTaxi.LevelLoading {
 /// <param name="Name"> Defines name of the level </param>
         public Level(string Name) { 
             name = Name;
-            Console.WriteLine(Platforms);
-
         }
 
 
