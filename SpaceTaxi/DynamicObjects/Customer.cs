@@ -28,6 +28,11 @@ public class Customer : Entity{
     public bool isSpawned{get; private set;}
     public bool HasSpawned{get; private set;}
     public bool dropoffLevelNext{get; private set;}
+    public bool dropOffAny{get; private set;}
+    public bool pickedUp{get; private set;}
+    public bool isDroppedOff{get; private set;}
+    public bool scoreCounted{get; private set;}
+    public float edgeOfDestination{get; private set;}
 
     private IBaseImage standRight;
     private IBaseImage standLeft;
@@ -38,7 +43,10 @@ public class Customer : Entity{
     public Customer(DynamicShape Shape, IBaseImage image, string Name, string Currentplatform, string Destinationplatform,
         double Dropofftimer, double Points, double Spawntimer) : base(Shape, image){
 
+        dropOffAny = false;
         dropoffLevelNext = false;
+        isDroppedOff = false;
+        scoreCounted = false;
 
         standRight = new Image(Path.Combine("Assets", "Images", "CustomerStandRight.png"));
         standLeft= new Image(Path.Combine("Assets", "Images", "CustomerStandLeft.png"));
@@ -60,20 +68,29 @@ public class Customer : Entity{
         isSpawned = false;
 
         HasSpawned = false;
-
-        Console.WriteLine(HasSpawned);
-
-
-        if(destinationplatform == "^"){
-            dropoffLevelNext = true;
-            destinationplatform.Replace("^", "");
-        } else if(destinationplatform.Contains("^")){
-            dropoffLevelNext = true;
-            destinationplatform.Replace("^", "");
-        }
+    }
+    public void CountScore(){
+        scoreCounted = true;
+    }
+    public void EdgeOfDestination(float q){
+        edgeOfDestination = q;
     }
     public void PickedUp(){
         Shape.Position = new Vec2F(5.0f, 5.0f);
+        pickedUp = true;
+        if(destinationplatform == "^"){
+            dropoffLevelNext = true;
+            dropOffAny = true;
+            destinationplatform.Replace("^", "");
+
+            System.Console.WriteLine(dropOffAny);
+            System.Console.WriteLine(destinationplatform);
+        } else if(destinationplatform.Contains("^")){
+            dropoffLevelNext = true;
+            System.Console.WriteLine(dropOffAny);
+            System.Console.WriteLine(destinationplatform);
+            destinationplatform.Replace("^", "");
+        }
     }
 
     public void Spawn(Vec2F Startpos){
@@ -85,17 +102,37 @@ public class Customer : Entity{
         bounderyright = Bounderyright;
     }
     public void Move(float x){
-        if(Shape.Position.X > x){
-            Shape.Position.X = Shape.Position.X - 0.001f;
-            Shape.AsDynamicShape().Direction = new Vec2F(-0.001f, 0.00f);
-            Image = walkLeft;
-            orientation = (Orientation)0;
-        } else if(Shape.Position.X < x){
-            Shape.Position.X = Shape.Position.X + 0.001f;
-            Shape.AsDynamicShape().Direction = new Vec2F(0.001f, 0.00f);
-            Image = walkRight;
-            orientation = (Orientation)1;
+        if (!isDroppedOff){
+            if(Shape.Position.X > x){
+                Shape.Position.X = Shape.Position.X - 0.001f;
+                Shape.AsDynamicShape().Direction = new Vec2F(-0.001f, 0.00f);
+                Image = walkLeft;
+                orientation = (Orientation)0;
+            } else if(Shape.Position.X < x){
+                Shape.Position.X = Shape.Position.X + 0.001f;
+                Shape.AsDynamicShape().Direction = new Vec2F(0.001f, 0.00f);
+                Image = walkRight;
+                orientation = (Orientation)1;
+            }
+        } 
+    }
+
+    public void IsDroppedOffMove(){
+        if (isDroppedOff){
+            //if(Shape.Position.X > edgeOfDestination){
+                Shape.Position.X = Shape.Position.X - 0.001f;
+                Shape.AsDynamicShape().Direction = new Vec2F(-0.001f, 0.00f);
+                Image = walkLeft;
+                orientation = (Orientation)0;
+            //}
         }
+    }
+
+    public void despawn(){
+        Shape.Position = new Vec2F(5.0f, 5.0f);
+    }
+    public void dropOff(){
+            isDroppedOff = true;
     }
 
     public void StopMove(){

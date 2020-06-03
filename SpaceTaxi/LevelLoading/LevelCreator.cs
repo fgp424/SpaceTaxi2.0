@@ -72,13 +72,10 @@ namespace SpaceTaxi.LevelLoading {
             rand = new Vec2F(0.5f,0.5f);
             rand1 = new Vec2F(0.1f,0.1f);
             foreach(string s in customerString){
-                Console.WriteLine(s);
                 string[] temp = s.Split(null);
-                level.CustomerList.Add(new Customer(new DynamicShape(new Vec2F(5.0f,5.0f), new Vec2F((0.1f), (0.05f))), 
+                level.CustomerList.Add(new Customer(new DynamicShape(new Vec2F(5.0f,5.0f), new Vec2F((0.03f), (0.06f))), 
                             new Image(Path.Combine("Assets", "Images", "CustomerStandRight.png")), temp[0], temp[2], temp[3], Convert.ToDouble(temp[4]), Convert.ToDouble(temp[5]), Convert.ToDouble(temp[1])));
             }
-
-            Console.WriteLine(); 
 
 
 
@@ -105,7 +102,7 @@ namespace SpaceTaxi.LevelLoading {
                         }
                         if (c == '>'){
                         level.player = new Player(
-                            new DynamicShape(new Vec2F(xValue-.05f, yValue-.05f), new Vec2F((.1f), (.1f))), 
+                            new DynamicShape(new Vec2F(xValue-.05f, yValue-.05f), new Vec2F((.05f), (.05f))), 
                             new Image(Path.Combine("Assets", "Images", "Taxi_Thrust_None_Right.png")),
                             (Orientation)1);
                             level.startpos = new Vec2F(xValue-.05f, yValue-.05f);

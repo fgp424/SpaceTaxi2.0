@@ -26,6 +26,7 @@ namespace SpaceTaxi.GameStates {
         private GameEventBus<object> taxiBus;
         private Entity backGroundImage;
         private Level ActiveLevel;
+        private Level NotActiveLevel;
         private Level Level1;
         private Level Level2;
         private AnimationContainer explosions;
@@ -83,6 +84,7 @@ namespace SpaceTaxi.GameStates {
             Level2 = LevelCreator2.CreateLevel("the-beach.txt");
             ActiveLevel = Level1;
 
+
             levels.Add(Level1);
             levels.Add(Level2);
 
@@ -93,14 +95,16 @@ namespace SpaceTaxi.GameStates {
                 ActiveLevel.UpdateLevelLogic();
                 Collision();
                 CustomerSpawned();
+                AddScore();
                 timer.AddTime();
                 foreach(Customer c in ActiveLevel.CustomerList){
                     c.Timer();
-                    if (MathF.Round(c.Shape.Position.Y, 3) == MathF.Round(ActiveLevel.player.Entity.Shape.Position.Y, 3)){
+                    if (MathF.Round(c.Shape.Position.Y, 3) == MathF.Round(ActiveLevel.player.Entity.Shape.Position.Y, 3) && !c.isDroppedOff){
                         c.Move(ActiveLevel.player.Entity.Shape.Position.X);
                     } else {
                         c.StopMove();
                     }
+                    c.IsDroppedOffMove();
                 }           
             }
         }
@@ -187,7 +191,25 @@ namespace SpaceTaxi.GameStates {
 
 
 
-
+        public void AddScore(){
+            foreach(Customer c in ActiveLevel.CustomerList){
+                if(c.isDroppedOff){
+                    char[] tempq = c.destinationplatform.ToCharArray();
+                    char tempcq = tempq[0];
+                    var tempindex = ActiveLevel.Platforms.ToList().FindIndex( q => q == tempcq);
+                    var tempcontainer = ActiveLevel.speratedplatforms[tempindex].GetEnumerator();
+                    tempcontainer.MoveNext();
+                    Platform qqqqq = (Platform) tempcontainer.Current;
+                    if(!c.scoreCounted){
+                        score.AddScore(c.points);
+                        c.CountScore();
+                    }
+                    if(c.Shape.Position.X <= qqqqq.Shape.Position.X){
+                        c.despawn();
+                    }
+                }
+            }
+        }
         public void CustomerSpawned(){
             foreach(Customer c in ActiveLevel.CustomerList){
                 if (c.isSpawned){
@@ -211,12 +233,6 @@ namespace SpaceTaxi.GameStates {
         public void Collision(){
 
             foreach (Customer c in ActiveLevel.CustomerList){
-
-                //System.Console.WriteLine(ActiveLevel.player.Entity.Shape.Position);
-                //System.Console.WriteLine(c.Shape.Position);
-                //System.Console.WriteLine(ActiveLevel.player.Entity.Shape.AsDynamicShape().Direction);
-                //System.Console.WriteLine();
-                              
                 if (DIKUArcade.Physics.CollisionDetection.Aabb(c.Shape.AsDynamicShape(), ActiveLevel.player.Entity.Shape).Collision){ 
                     c.PickedUp();
                 }
@@ -237,17 +253,37 @@ namespace SpaceTaxi.GameStates {
                             ActiveLevel.player.Physics.Y = 0.0f;
                             ActiveLevel.player.Physics.X = 0.0f;
 
-                            //Console.WriteLine(ActiveLevel.Platforms[ActiveLevel.speratedplatforms.IndexOf(e)]);
-                            foreach (Customer c in ActiveLevel.CustomerList){
-                                char[] tempcharlist = c.currentplatform.ToCharArray();
+                            var tempp = ActiveLevel;
+                            foreach(Customer c in ActiveLevel.CustomerList){
+                                char[] tempcharlist = c.destinationplatform.ToCharArray();
                                 char tempc = tempcharlist[0];
-                                if(c.isSpawned){
-                                    if (tempc == ActiveLevel.Platforms[ActiveLevel.speratedplatforms.IndexOf(e)]){
+                                char[] temp = c.currentplatform.ToCharArray();
+                                char tempcc = temp[0];
+                                //Console.WriteLine(c.dropOffAny);
+                                if(c.pickedUp){
+                                    char[] tempq = c.currentplatform.ToCharArray();
+                                    char tempcq = tempq[0];
+                                    var tempindex = ActiveLevel.Platforms.ToList().FindIndex( q => q == tempcq);
+                                    var tempcontainer = ActiveLevel.speratedplatforms[tempindex].GetEnumerator();
+                                    tempcontainer.MoveNext();
+                                    Platform qqqqq = (Platform) tempcontainer.Current;
+                                    if((!c.isDroppedOff && ActiveLevel.Platforms[ActiveLevel.speratedplatforms.IndexOf(e)] != tempcc) && (ActiveLevel.Platforms[ActiveLevel.speratedplatforms.IndexOf(e)] == tempc)){
+                                        c.Spawn(ActiveLevel.player.Entity.Shape.Position + new Vec2F(0.05f, 0.0f));
+                                        c.dropOff();
+                                        c.EdgeOfDestination(qqqqq.Shape.Position.X - 0.1f);
                                     }
-                                } 
+                                }
                             }
+                            //foreach (Customer c in ActiveLevel.CustomerList){
+                            //    char[] tempcharlist = c.currentplatform.ToCharArray();
+                            //    char tempc = tempcharlist[0];
+                            //    if(c.isSpawned){
+                            //        if (tempc == ActiveLevel.Platforms[ActiveLevel.speratedplatforms.IndexOf(e)]){
+                            //        }
+                            //    } 
+                            //}
                             
-                        } else{
+                        } else {
                             ActiveLevel.player.Entity.DeleteEntity();
                             AddExplosion(ActiveLevel.player.Entity.Shape.Position.X-0.05f, ActiveLevel.player.Entity.Shape.Position.Y-0.05f,0.2f,0.2f);
                             ActiveLevel.player.Entity.Shape.Position = new Vec2F(5.0f,5.0f);
@@ -257,16 +293,26 @@ namespace SpaceTaxi.GameStates {
             }
 
 
+            //foreach (EntityContainer<Platform> e in NotActiveLevel.speratedplatforms) {
+            //    foreach (Platform p in e){
+            //        if (DIKUArcade.Physics.CollisionDetection.Aabb(ActiveLevel.player.Entity.Shape.AsDynamicShape(), p.Shape).Collision){
+            //        }
+            //    }
+            //}
+
+
             foreach (Entity p in ActiveLevel.portal) {
                     if (DIKUArcade.Physics.CollisionDetection.Aabb(ActiveLevel.player.Entity.Shape.AsDynamicShape(), p.Shape).Collision){
                         if (ActiveLevel == Level1){
                             Level2.player.Entity.Shape.Position = Level2.startpos;
                             Level2.player.Physics = new Vec2F (0.0f, 0.0f);
                             ActiveLevel = Level2;
+                            NotActiveLevel = Level1;
                         } else if (ActiveLevel == Level2){
                             Level1.player.Entity.Shape.Position = Level1.startpos;
                             Level1.player.Physics = new Vec2F (0.0f, 0.0f);
                             ActiveLevel = Level1;
+                            NotActiveLevel = Level2;
                         }
                     }
             }
