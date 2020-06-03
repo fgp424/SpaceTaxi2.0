@@ -1,16 +1,11 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
-using DIKUArcade;
 using DIKUArcade.EventBus;
-using DIKUArcade.Timers;
 using DIKUArcade.Graphics;
 using DIKUArcade.Entities;
-using DIKUArcade.Input;
 using DIKUArcade.Math;
-using DIKUArcade.Physics;
 using DIKUArcade.State;
-using DIKUArcade.Utilities;
 using SpaceTaxi.LevelLoading;
 using SpaceTaxi.StaticObjects;
 using SpaceTaxi.qq;
@@ -19,7 +14,8 @@ using SpaceTaxi.Enums;
 
 
 
-namespace SpaceTaxi.GameStates { 
+namespace SpaceTaxi.GameStates
+{
     public class GameRunning : IGameState { 
 
 //fields
@@ -41,7 +37,7 @@ namespace SpaceTaxi.GameStates {
         private Text Gamenotreadytext2;
         private Timer timer;
         private Score score;
-        private List<Customer> allCustomer = new List<Customer>();
+        private List<Customer> allCustomer;
         private Player player;
         float xValue;
         float yValue;
@@ -94,6 +90,8 @@ namespace SpaceTaxi.GameStates {
             Level2 = LevelCreator2.CreateLevel("the-beach.txt");
             ActiveLevel = Level1;
 
+            allCustomer = new List<Customer>();
+
             foreach (Customer c in Level1.CustomerList){
                 allCustomer.Add(c);
             }
@@ -134,7 +132,6 @@ namespace SpaceTaxi.GameStates {
                             new Image(Path.Combine("Assets", "Images", "Taxi_Thrust_None_Right.png")),
                             (Orientation)1);
                             startpos1 = new Vec2F(xValue-.05f, yValue-.05f);
-                            System.Console.WriteLine(startpos1);
                         }
                     }
                 }
@@ -149,7 +146,6 @@ namespace SpaceTaxi.GameStates {
                     for (int i = 0; i<LevelCreator2.PngChar.Length; i++){
                         if (c == '>'){
                             startpos2 = new Vec2F(xValue1-.05f, yValue1-.05f);
-                            System.Console.WriteLine(startpos2);
                         }
                     }
                 }
@@ -165,7 +161,10 @@ namespace SpaceTaxi.GameStates {
                 timer.AddTime();
                 player.Move();
                 player.GraficUpdate();
-                player.Gravity(); 
+                player.Gravity();
+                foreach(Customer c in allCustomer){
+                    c.IsDroppedOffMove();
+                }
                 foreach(Customer c in ActiveLevel.CustomerList){
                     c.Timer();
                     if (!player.hasCustomer){
@@ -175,7 +174,6 @@ namespace SpaceTaxi.GameStates {
                     } else {
                         c.StopMove();
                     }
-                    c.IsDroppedOffMove();
                 }   
             }
         }
@@ -187,8 +185,8 @@ namespace SpaceTaxi.GameStates {
                 score.RenderScore();
                 timer.RenderTimer();
                 player.Entity.RenderEntity();   
-                foreach(Customer c in ActiveLevel.CustomerList){
-                    c.RenderEntity();
+                foreach(Customer c in allCustomer){
+                        c.RenderEntity();
                 }
                 if (Gamenotready == true ){
                     Gamenotreadytext1.RenderText();
@@ -224,7 +222,6 @@ namespace SpaceTaxi.GameStates {
                             c.CountScore();
                         }
                         if(c.Shape.Position.X <= qqqqq.Shape.Position.X){
-                            System.Console.WriteLine("despawned");
                             c.despawn();
                             c.dropOffReset();
                             player.DroppedOff();
@@ -234,21 +231,6 @@ namespace SpaceTaxi.GameStates {
                             score.AddScore(c.points);
                             c.CountScore();
                         }
-                        foreach (EntityContainer<Platform> q in ActiveLevel.speratedplatforms) {
-                                            foreach (Platform qq in q){
-                                                if ((DIKUArcade.Physics.CollisionDetection.Aabb(player.Entity.Shape.AsDynamicShape(), qq.Shape).Collision)){
-                                                        var tempq = ActiveLevel.speratedplatforms.IndexOf(q);
-                                                        var tempqq = ActiveLevel.speratedplatforms[tempq].GetEnumerator();
-                                                        tempqq.MoveNext();
-                                                        Platform qqq = (Platform) tempqq.Current;
-                                                            if(c.Shape.Position.X <= qqq.Shape.Position.X){
-                                                                c.despawn();
-                                                                c.dropOffReset();
-                                                                player.DroppedOff();
-                                                            }
-                                                }
-                                            }
-                        } 
                     }                           
                 }
             }
@@ -308,13 +290,14 @@ namespace SpaceTaxi.GameStates {
                                 char[] temp = c.currentplatform.ToCharArray();
                                 char tempcc = temp[0];
 
-                                if(!c.pickedUp){
-                                    if(c.dropOffAny){
+                                if(c.pickedUp){
+                                    if(!c.dropOffAny){
+                                        
                                         var tempindex = Platforms.ToList().FindIndex( q => q == tempc);
                                         var tempcontainer = speratedplatforms[tempindex].GetEnumerator();
                                         tempcontainer.MoveNext();
                                         Platform qqqqq = (Platform) tempcontainer.Current;
-                                        if((!c.isDroppedOff && /* ActiveLevel.Platforms[ActiveLevel.speratedplatforms.IndexOf(e)] != tempcc) && */Platforms[speratedplatforms.IndexOf(e)] == tempc)){                                    
+                                        if((!c.isDroppedOff && /* ActiveLevel.Platforms[ActiveLevel.speratedplatforms.IndexOf(e)] != tempcc) && */Platforms[speratedplatforms.IndexOf(e)] == tempc)){                                   
                                             c.Spawn(player.Entity.Shape.Position + new Vec2F(0.05f, 0.0f));
                                             c.dropOff();
                                             c.EdgeOfDestination(qqqqq.Shape.Position.X - 0.1f);
@@ -337,6 +320,19 @@ namespace SpaceTaxi.GameStates {
                                     }
                                     
                                 }
+                                if (c.dropOffAny){
+                                    var tempq = ActiveLevel.speratedplatforms.IndexOf(e);
+                                    var tempqq = ActiveLevel.speratedplatforms[tempq].GetEnumerator();
+                                    tempqq.MoveNext();
+                                    Platform qqq = (Platform) tempqq.Current;
+                                        if(c.Shape.Position.X <= qqq.Shape.Position.X){
+                                            c.despawn();
+                                            c.dropOffReset();
+                                            player.DroppedOff();
+                                        }
+                                }
+
+
                             }
                     }
                 }

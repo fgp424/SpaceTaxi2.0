@@ -1,11 +1,9 @@
-using System;
 using DIKUArcade.Entities;
 using SpaceTaxi.StaticObjects;
-using SpaceTaxi.Enums;
-using DIKUArcade.Math;
 using System.Collections.Generic;
 
-namespace SpaceTaxi.LevelLoading {
+namespace SpaceTaxi.LevelLoading
+{
     public class Level {
         // Add fields as needed
         public EntityContainer<VisualObjects> obstacles = new EntityContainer<VisualObjects>();
@@ -14,8 +12,6 @@ namespace SpaceTaxi.LevelLoading {
         public EntityContainer<VisualObjects> portal = new EntityContainer<VisualObjects>();
         public char[] Platforms;
         public List<Customer> CustomerList = new List<Customer>();
-
-        public Player player;
         public string name;
 
 /// <summary> Level method in charge of changeing the name </summary>

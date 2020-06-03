@@ -1,21 +1,11 @@
-using System;
 using System.IO;
-using System.Collections.Generic;
-using DIKUArcade;
-using DIKUArcade.EventBus;
-using DIKUArcade.Timers;
 using DIKUArcade.Graphics;
 using DIKUArcade.Entities;
-using DIKUArcade.Input;
 using DIKUArcade.Math;
-using DIKUArcade.Physics;
-using DIKUArcade.State;
-using DIKUArcade.Utilities;
 using SpaceTaxi.Enums;
 
 public class Customer : Entity{
 
-    public Vec2F position {get; private set;}
     public Orientation orientation {get; private set;}
     public float bounderyleft{get; private set;}
     public float bounderyright{get; private set;}
@@ -82,7 +72,7 @@ public class Customer : Entity{
             dropoffLevelNext = true;
             dropOffAny = true;
             destinationplatform.Replace("^", "");
-        } else if(destinationplatform.Contains("^")){
+        } else if(destinationplatform.Contains('^')){
             dropoffLevelNext = true;
             destinationplatform = destinationplatform.Replace("^", "");
         }

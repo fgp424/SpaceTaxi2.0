@@ -1,10 +1,9 @@
-using System;
 using System.IO;
 using System.Collections.Generic;
 using SpaceTaxi.Utilities;
-using System.Linq;
 
-namespace SpaceTaxi.LevelLoading {
+namespace SpaceTaxi.LevelLoading
+{
     public class Reader {
 //fields
         public List<string> MapData {get; private set;}

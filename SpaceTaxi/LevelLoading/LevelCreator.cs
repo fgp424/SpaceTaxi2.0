@@ -5,8 +5,6 @@ using System.IO;
 using DIKUArcade.Entities;
 using DIKUArcade.Math;
 using SpaceTaxi.StaticObjects;
-using SpaceTaxi.Enums;
-using System.Linq;
 
 namespace SpaceTaxi.LevelLoading {
     public class LevelCreator {
@@ -16,7 +14,6 @@ namespace SpaceTaxi.LevelLoading {
         float xValue = 0.0f;
         float yValue = 1.0f;
         public Reader reader{get; private set;}
-        public Player player;
 
         public List<Customer> CustomerList = new List<Customer>();
 
@@ -61,8 +58,6 @@ namespace SpaceTaxi.LevelLoading {
             Platforms = PlatformString.ToCharArray();
             level.Platforms = Platforms;
 
-            System.Console.WriteLine(Platforms.Length);
-
             for(int i=0; i < Platforms.Length; i++){
                 level.speratedplatforms.Add(new EntityContainer<Platform>());
             }
@@ -78,8 +73,6 @@ namespace SpaceTaxi.LevelLoading {
                 level.CustomerList.Add(new Customer(new DynamicShape(new Vec2F(5.0f,5.0f), new Vec2F((0.03f), (0.06f))), 
                             new Image(Path.Combine("Assets", "Images", "CustomerStandRight.png")), temp[0], temp[2], temp[3], Convert.ToDouble(temp[4]), Convert.ToDouble(temp[5]), Convert.ToDouble(temp[1])));
             }
-
-
 
             foreach (char c in Platforms){
                 for(int i = 0; i<PngChar.Length; i++)

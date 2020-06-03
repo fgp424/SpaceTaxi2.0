@@ -1,21 +1,13 @@
-using System;
 using System.IO;
-using System.Collections.Generic;
-using DIKUArcade;
 using DIKUArcade.EventBus;
-using DIKUArcade.Timers;
 using DIKUArcade.Graphics;
 using DIKUArcade.Entities;
-using DIKUArcade.Input;
 using DIKUArcade.Math;
-using DIKUArcade.Physics;
 using DIKUArcade.State;
-using DIKUArcade.Utilities;
-using SpaceTaxi.LevelLoading;
-using SpaceTaxi.StaticObjects;
 
 
-namespace SpaceTaxi.GameStates { 
+namespace SpaceTaxi.GameStates
+{
     public class GamePaused : IGameState {
         private static GamePaused instance = null;
         private Entity backGroundImage;

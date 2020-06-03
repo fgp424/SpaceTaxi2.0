@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.Collections.Generic;
 using DIKUArcade;
-using DIKUArcade.Entities;
 using DIKUArcade.EventBus;
-using DIKUArcade.Graphics;
-using DIKUArcade.Math;
 using DIKUArcade.Timers;
 using SpaceTaxi.GameStates;
-using SpaceTaxi.Utilities;
 using SpaceTaxi.Enums;
 
-namespace SpaceTaxi {
+namespace SpaceTaxi
+{
     public class Game : IGameEventProcessor<object> {
         private GameEventBus<object> taxiBus;
         private GameTimer gameTimer;

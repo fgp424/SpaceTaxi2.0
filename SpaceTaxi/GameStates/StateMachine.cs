@@ -1,21 +1,11 @@
-using DIKUArcade.EventBus; 
+using DIKUArcade.EventBus;
 using DIKUArcade.State;
-using System;
-using System.IO;
-using System.Collections.Generic;
-using DIKUArcade;
-using DIKUArcade.Timers;
-using DIKUArcade.Graphics;
-using DIKUArcade.Entities;
-using DIKUArcade.Input;
-using DIKUArcade.Math;
-using DIKUArcade.Physics;
-using DIKUArcade.Utilities;
 using SpaceTaxi.Enums;
 
 
 
-namespace SpaceTaxi.GameStates { 
+namespace SpaceTaxi.GameStates
+{
     public class StateMachine : IGameEventProcessor<object> { 
 //fields
         public IGameState ActiveState { get; private set; }
