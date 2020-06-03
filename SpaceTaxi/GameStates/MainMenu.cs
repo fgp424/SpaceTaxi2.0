@@ -93,8 +93,5 @@ namespace SpaceTaxi.GameStates
                 throw new System.ArgumentException("KeyState unknown");
             }
         }
-
-
-
     }
 }

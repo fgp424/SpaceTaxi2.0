@@ -188,7 +188,7 @@ namespace SpaceTaxi.GameStates
                 foreach(Customer c in allCustomer){
                         c.RenderEntity();
                 }
-                if (Gamenotready == true ){
+                if (Gamenotready){
                     Gamenotreadytext1.RenderText();
                     Gamenotreadytext2.RenderText();
                 }
@@ -297,7 +297,7 @@ namespace SpaceTaxi.GameStates
                                         var tempcontainer = speratedplatforms[tempindex].GetEnumerator();
                                         tempcontainer.MoveNext();
                                         Platform qqqqq = (Platform) tempcontainer.Current;
-                                        if((!c.isDroppedOff && /* ActiveLevel.Platforms[ActiveLevel.speratedplatforms.IndexOf(e)] != tempcc) && */Platforms[speratedplatforms.IndexOf(e)] == tempc)){                                   
+                                        if((!c.isDroppedOff && Platforms[speratedplatforms.IndexOf(e)] == tempc)){                                   
                                             c.Spawn(player.Entity.Shape.Position + new Vec2F(0.05f, 0.0f));
                                             c.dropOff();
                                             c.EdgeOfDestination(qqqqq.Shape.Position.X - 0.1f);

@@ -76,21 +76,21 @@ public class Player : IGameEventProcessor<object> {
 /// <summary> Method in charge of graifc updates </summary>
     public void GraficUpdate(){
         if (Orientation == (Orientation)0){
-            if (IsUpPressed == true && IsLeftPressed == true){
+            if (IsUpPressed  && IsLeftPressed ){
                 Entity.Image = UPNLEFT;
-            } else if (IsUpPressed == true){
+            } else if (IsUpPressed ){
                 Entity.Image = UPLEFT;
-            } else if (IsLeftPressed == true){
+            } else if (IsLeftPressed){
                 Entity.Image = LEFT;
             } else {
                 Entity.Image = NONELEFT;
             }
         } else if (Orientation == (Orientation)1){
-            if (IsUpPressed == true && IsRightPressed == true){
+            if (IsUpPressed  && IsRightPressed){
                 Entity.Image = UPNRIGHT;
-            } else if (IsUpPressed == true){
+            } else if (IsUpPressed){
                 Entity.Image = UPRIGHT;
-            } else if (IsRightPressed == true){
+            } else if (IsRightPressed){
                 Entity.Image = RIGHT;
             } else {
                 Entity.Image = NONERIGHT;
@@ -103,17 +103,17 @@ public class Player : IGameEventProcessor<object> {
     }
 /// <summary> Method in charge of movement updates </summary>
     public void Move() {
-            if (IsUpPressed == true && IsLeftPressed == true){
+            if (IsUpPressed && IsLeftPressed){
                 Physics.Y = Physics.Y + 0.0001f;
                 Physics.X = Physics.X - 0.0001f;
-            } else if (IsUpPressed == true && IsRightPressed == true){
+            } else if (IsUpPressed && IsRightPressed){
                 Physics.X = Physics.X + 0.0001f;
                 Physics.Y = Physics.Y + 0.0001f;
-            } else if (IsUpPressed == true){
+            } else if (IsUpPressed){
                 Physics.Y = Physics.Y + 0.0001f;
-            } else if (IsLeftPressed == true){
+            } else if (IsLeftPressed){
                 Physics.X = Physics.X - 0.0001f;
-            } else if (IsRightPressed == true){
+            } else if (IsRightPressed ){
                 Physics.X = Physics.X + 0.0001f;}
         Entity.Shape.AsDynamicShape().Direction = Physics;
         Entity.Shape.Move();

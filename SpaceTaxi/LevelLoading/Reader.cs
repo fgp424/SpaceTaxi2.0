@@ -46,14 +46,14 @@ namespace SpaceTaxi.LevelLoading
             NameData.Add(lines[24]);
 
             for(int i = 0; i<lines.Length; i++){
-               if(lines[i].Contains("png")==true){ 
+               if(lines[i].Contains("png")){ 
                    LegendData.Add(lines[i]);
                 }
             }
 
 
             for(int i = 0; i<lines.Length; i++){
-               if(lines[i].Contains("Customer")==true){ 
+               if(lines[i].Contains("Customer")){ 
                    CustomerData.Add(lines[i]);
                 }
             }
