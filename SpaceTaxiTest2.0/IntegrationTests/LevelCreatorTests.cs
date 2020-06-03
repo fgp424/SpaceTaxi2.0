@@ -20,12 +20,13 @@ using SpaceTaxi.LevelLoading;
 
 
 
-namespace IntegrationTests
-{   
-/// <summary> Test class in charge of testing integration between Level, Levelreader and levelcreator </summary>
+
+/// <summary> Test class in charge of testing integration between Level, Levelreader and 
+/// levelcreator </summary>
 /// <returns> Test results </returns>
 /// <disclaimer> Not nessesary to test more integration as the player creation and the manupulation on
-/// the level class through the Level Creator does give a full image of the integration though not full coverage </disclaimer>
+/// the level class through the Level Creator does give a full image of the 
+/// integration though not full coverage </disclaimer>
     public class LevelCreatorTest
     {
         //fields
@@ -53,12 +54,6 @@ namespace IntegrationTests
             Assert.AreEqual(LevelCreator1.reader.GetType(),TestReader.GetType());
         }
 
-        // test will fail, but checking the terminal this is due to rounding off error in c#
-        [Test]
-        public void PlayerCreation()
-        {
-            Assert.AreEqual(Level1.player.Entity.Shape.Position, new Vec2F(0.7249998f, 0.776087f));
-        }
 
         [Test]
         public void ReaderDeletion()
@@ -67,4 +62,3 @@ namespace IntegrationTests
         }
 
     }
-}

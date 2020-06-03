@@ -13,8 +13,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\SpaceTaxi\SpaceTaxi.csproj" />
-    <ProjectReference Include="..\..\DIKUArcade\DIKUArcade\DIKUArcade.csproj" />
+    <ProjectReference Include="..\SpaceTaxi\SpaceTaxi.csproj" />
+    <ProjectReference Include="..\DIKUArcade\DIKUArcade\DIKUArcade.csproj" />
   </ItemGroup>
 
 </Project>
