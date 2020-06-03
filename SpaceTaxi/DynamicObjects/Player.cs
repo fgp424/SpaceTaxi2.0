@@ -29,6 +29,8 @@ public class Player : IGameEventProcessor<object> {
     private IBaseImage LEFT;
     private IBaseImage NONERIGHT;
     private IBaseImage NONELEFT;
+    public string customerName{get; private set;}
+    public bool hasCustomer{get; private set;}
     private bool IsUpPressed = false;
     private bool IsLeftPressed = false;
     private bool IsRightPressed = false;
@@ -56,8 +58,16 @@ public class Player : IGameEventProcessor<object> {
         RIGHT = new ImageStride(80,ImageStride.CreateStrides(2, Path.Combine("Assets", "Images", "Taxi_Thrust_Back_Right.png")));
 
         Physics = new Vec2F(0.0f, 0.0f);
+        hasCustomer = false;
     }
 
+    public void PickUp(string name){
+        hasCustomer = true;
+    }
+    
+    public void DroppedOff(){
+        hasCustomer = false;
+    }
 
 /// <summary> Method in charge of gravity updates </summary>
     public void Gravity(){

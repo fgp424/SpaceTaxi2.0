@@ -100,13 +100,6 @@ namespace SpaceTaxi.LevelLoading {
                                 new StationaryShape(new Vec2F(xValue, yValue), new Vec2F((1.0f/40.0f), (1.0f/23.0f))), 
                                 mapPics[i]));
                         }
-                        if (c == '>'){
-                        level.player = new Player(
-                            new DynamicShape(new Vec2F(xValue-.05f, yValue-.05f), new Vec2F((.05f), (.05f))), 
-                            new Image(Path.Combine("Assets", "Images", "Taxi_Thrust_None_Right.png")),
-                            (Orientation)1);
-                            level.startpos = new Vec2F(xValue-.05f, yValue-.05f);
-                        }
                     }
                     for (int i = 0; i<Platforms.Length; i++){
                         if (Platforms[i] == c){

@@ -155,7 +155,7 @@ public class Customer : Entity{
         }
         dropofftimer = dropofftimer - 1f/60f;
         if(dropofftimer < 0){
-            points = points - 1f/60f;
+            points = points - 10f/60f;
         }
     }
 

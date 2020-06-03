@@ -17,7 +17,6 @@ namespace SpaceTaxi.LevelLoading {
 
         public Player player;
         public string name;
-        public Vec2F startpos;
 
 /// <summary> Level method in charge of changeing the name </summary>
 /// <param name="Name"> Defines name of the level </param>
@@ -29,19 +28,10 @@ namespace SpaceTaxi.LevelLoading {
 
 
 /// <summary> Updates the logic of the level </summary>
-        public void UpdateLevelLogic() { 
-            if (!player.Entity.IsDeleted()){
-                player.Move();
-                player.GraficUpdate();
-                player.Gravity();
-            }
-            
+        public void UpdateLevelLogic() {            
         }
 /// <summary> Renders the objects of the level </summary>
         public void RenderLevelObjects() {
-            if (!player.Entity.IsDeleted()){
-                player.Entity.RenderEntity();   
-            }
             foreach (EntityContainer<Platform> e in speratedplatforms) {
                 foreach (Platform p in e){
                     p.RenderEntity();
