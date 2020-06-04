@@ -4,8 +4,11 @@ using DIKUArcade.Entities;
 using DIKUArcade.Math;
 using SpaceTaxi.Enums;
 
+
+/// <summary> Customer class for customer logic </summary>
 public class Customer : Entity{
 
+/// <summary> Fields </summary>
     public Orientation orientation {get; private set;}
     public float bounderyleft{get; private set;}
     public float bounderyright{get; private set;}
@@ -24,14 +27,26 @@ public class Customer : Entity{
     public bool scoreCounted{get; private set;}
     public float edgeOfDestination{get; private set;}
 
-    private IBaseImage standRight;
+    public IBaseImage standRight{get; private set;}
     private IBaseImage standLeft;
     private IBaseImage walkRight;
     private IBaseImage walkLeft;
     
-
-    public Customer(DynamicShape Shape, IBaseImage image, string Name, string Currentplatform, string Destinationplatform,
-        double Dropofftimer, double Points, double Spawntimer) : base(Shape, image){
+/// <summary>
+/// Customer constructer that instantiaties the customer as an object
+/// </summary>
+/// <param name="Shape">Extend and position of object</param>
+/// <param name="image">Visual representation of object</param>
+/// <param name="Name">Name of customer</param>
+/// <param name="Currentplatform">Current location of Customer</param>
+/// <param name="Destinationplatform">Destination location of customer</param>
+/// <param name="Dropofftimer">Time to drop off customer</param>
+/// <param name="Points">How many points a instant deliver will give</param>
+/// <param name="Spawntimer">Time for spawning of customer</param>
+/// <returns></returns>
+    public Customer(DynamicShape Shape, IBaseImage image, string Name, string Currentplatform, 
+        string Destinationplatform, double Dropofftimer, double Points, double Spawntimer) 
+        : base(Shape, image){
 
         dropOffAny = false;
         dropoffLevelNext = false;
@@ -41,8 +56,10 @@ public class Customer : Entity{
         standRight = new Image(Path.Combine("Assets", "Images", "CustomerStandRight.png"));
         standLeft= new Image(Path.Combine("Assets", "Images", "CustomerStandLeft.png"));
 
-        walkRight = new ImageStride(80,ImageStride.CreateStrides(2, Path.Combine("Assets", "Images", "CustomerWalkRight.png")));
-        walkLeft = new ImageStride(80,ImageStride.CreateStrides(2, Path.Combine("Assets", "Images", "CustomerWalkLeft.png")));
+        walkRight = new ImageStride(80,ImageStride.CreateStrides(2, Path.Combine
+            ("Assets", "Images", "CustomerWalkRight.png")));
+        walkLeft = new ImageStride(80,ImageStride.CreateStrides(2, Path.Combine
+            ("Assets", "Images", "CustomerWalkLeft.png")));
                 
         
         image = standRight;
@@ -59,12 +76,22 @@ public class Customer : Entity{
 
         HasSpawned = false;
     }
+/// <summary>
+/// Method that changes field values in customer
+/// </summary>
     public void CountScore(){
         scoreCounted = true;
     }
+/// <summary>
+/// Method that changes field values in customer
+/// </summary>
     public void EdgeOfDestination(float q){
         edgeOfDestination = q;
     }
+/// <summary>
+/// Markes customer as picked up and reduces destination platform
+/// to a single char
+/// </summary>
     public void PickedUp(){
         Shape.Position = new Vec2F(5.0f, 5.0f);
         pickedUp = true;
@@ -78,14 +105,19 @@ public class Customer : Entity{
         }
     }
 
+/// <summary>
+/// Updates customer position when spawned
+/// </summary>
+/// <param name="Startpos"></param>
     public void Spawn(Vec2F Startpos){
         Shape.Position.X = Startpos.X;
         Shape.Position.Y = Startpos.Y;
     }
-    public void Bounderies(float Bounderyleft, float Bounderyright){
-        bounderyleft = Bounderyleft;
-        bounderyright = Bounderyright;
-    }
+
+/// <summary>
+/// Moves customer to wards the x input
+/// </summary>
+/// <param name="x">destination input</param>
     public void Move(float x){
         if (!isDroppedOff){
             if(Shape.Position.X > x){
@@ -102,6 +134,9 @@ public class Customer : Entity{
         } 
     }
 
+/// <summary>
+/// Moves the player towards the left edge if the Customer is tagged as dropped off
+/// </summary>
     public void IsDroppedOffMove(){
         if (isDroppedOff){
             //if(Shape.Position.X > edgeOfDestination){
@@ -113,18 +148,30 @@ public class Customer : Entity{
         }
     }
 
+/// <summary>
+/// "Despawns" the player by moving it out of frame
+/// </summary>
     public void despawn(){
         Shape.Position = new Vec2F(5.0f, 5.0f);
     }
+/// <summary>
+/// Method that changes field values in customer
+/// </summary>
     public void dropOff(){
             isDroppedOff = true;
             pickedUp = false;
     }
-
+/// <summary>
+/// Method that changes field values in customer
+/// </summary>
     public void dropOffReset(){
         isDroppedOff = false;
     }
 
+/// <summary>
+/// Method that stops the player and changes it's visual representation
+/// to standing still in the orientation it is
+/// </summary>
     public void StopMove(){
         if (orientation == (Orientation)1){
             Image = standRight;
@@ -132,10 +179,16 @@ public class Customer : Entity{
             Image = standLeft;
         }
     }
-
+/// <summary>
+/// Method that changes field values in customer
+/// </summary>
     public void Spawned(){
         HasSpawned = true;
     }
+
+/// <summary>
+/// timer tracker for player
+/// </summary>
     public void Timer(){
         if(spawntimer >= 0){
             spawntimer = spawntimer - 1f/60f;

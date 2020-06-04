@@ -9,7 +9,7 @@ using SpaceTaxi.Enums;
 
 public class Player : IGameEventProcessor<object> {
 
-/// <summary> Properties </summary>
+/// <summary> Fields </summary>
     public Entity Entity {get; private set;}
     public Orientation Orientation {get; private set;}
     public Vec2F Physics;

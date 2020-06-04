@@ -19,7 +19,8 @@ namespace SpaceTaxi.GameStates
     public class GameRunning : IGameState { 
 
 //fields
-        public List<EntityContainer<Platform>> speratedplatforms = new List<EntityContainer<Platform>>();
+        public List<EntityContainer<Platform>> speratedplatforms = 
+            new List<EntityContainer<Platform>>();
         private static GameRunning instance = null;
         private GameEventBus<object> taxiBus;
         private Entity backGroundImage;
@@ -62,7 +63,8 @@ namespace SpaceTaxi.GameStates
 /// <summary> Method that initializes game state</summary>
         public void InitializeGameState(){
             Gamenotready = true;
-            Gamenotreadytext1 = new Text("Press space to",new Vec2F(0.35f, 0.3f), new Vec2F(0.3f, 0.3f));
+            Gamenotreadytext1 = new Text("Press space to",new Vec2F(0.35f, 0.3f), 
+                new Vec2F(0.3f, 0.3f));
             Gamenotreadytext1.SetColor(new Vec3I(0, 255, 0));
 
             Gamenotreadytext2 = new Text("start",new Vec2F(0.45f, 0.25f), new Vec2F(0.3f, 0.3f));
@@ -128,7 +130,8 @@ namespace SpaceTaxi.GameStates
                     for (int i = 0; i<LevelCreator1.PngChar.Length; i++){
                         if (c == '>'){
                         player = new Player(
-                            new DynamicShape(new Vec2F(xValue-.05f, yValue-.05f), new Vec2F((.05f), (.05f))), 
+                            new DynamicShape(new Vec2F(xValue-.05f, yValue-.05f), 
+                            new Vec2F((.05f), (.05f))), 
                             new Image(Path.Combine("Assets", "Images", "Taxi_Thrust_None_Right.png")),
                             (Orientation)1);
                             startpos1 = new Vec2F(xValue-.05f, yValue-.05f);
@@ -168,8 +171,9 @@ namespace SpaceTaxi.GameStates
                 foreach(Customer c in ActiveLevel.CustomerList){
                     c.Timer();
                     if (!player.hasCustomer){
-                        if (MathF.Round(c.Shape.Position.Y, 3) == MathF.Round(player.Entity.Shape.Position.Y, 3) && !c.isDroppedOff){
-                            c.Move(player.Entity.Shape.Position.X);
+                        if (MathF.Round(c.Shape.Position.Y, 3) == MathF.Round
+                            (player.Entity.Shape.Position.Y, 3) && !c.isDroppedOff){
+                                c.Move(player.Entity.Shape.Position.X);
                         }
                     } else {
                         c.StopMove();
@@ -204,7 +208,9 @@ namespace SpaceTaxi.GameStates
         }
 
 
-
+/// <summary>
+/// Method that adds score and drops off customers
+/// </summary>
         public void AddScore(){
             foreach(Customer c in allCustomer){
                 if(c.isDroppedOff){
@@ -237,7 +243,9 @@ namespace SpaceTaxi.GameStates
         }
 
 
-//Customer spawn logic
+/// <summary>
+/// Customer method for spawn logic
+/// </summary>
         public void CustomerSpawned(){
             foreach(Customer c in allCustomer){
                 if (c.isSpawned){
@@ -257,21 +265,27 @@ namespace SpaceTaxi.GameStates
                 }
             }
         }
-    /// <summary> Method that tracks collision between the player object and given objects on the map </summary>
+/// <summary>
+/// Method that tracks collision between the player object and given objects on the map 
+///</summary>
         public void Collision(){
 
 //Collision detection on customers
             foreach (Customer c in allCustomer){
-                if (DIKUArcade.Physics.CollisionDetection.Aabb(c.Shape.AsDynamicShape(), player.Entity.Shape).Collision){ 
-                    c.PickedUp();
+                if (DIKUArcade.Physics.CollisionDetection.Aabb(c.Shape.AsDynamicShape(), 
+                    player.Entity.Shape).Collision){ 
+                        c.PickedUp();
+                        player.PickUp(c.name);
                 }
             }
 //Collision detection on obstacles
             foreach (Entity o in ActiveLevel.obstacles) {
-                    if (DIKUArcade.Physics.CollisionDetection.Aabb(player.Entity.Shape.AsDynamicShape(), o.Shape).Collision){
-                        player.Entity.DeleteEntity();
-                        AddExplosion(player.Entity.Shape.Position.X-0.05f, player.Entity.Shape.Position.Y-0.05f,0.2f,0.2f);
-                        player.Entity.Shape.Position = new Vec2F(5.0f,5.0f);
+                    if (DIKUArcade.Physics.CollisionDetection.Aabb(player.Entity.Shape.
+                        AsDynamicShape(), o.Shape).Collision){
+                            player.Entity.DeleteEntity();
+                            AddExplosion(player.Entity.Shape.Position.X-0.05f, 
+                                player.Entity.Shape.Position.Y-0.05f,0.2f,0.2f);
+                            player.Entity.Shape.Position = new Vec2F(5.0f,5.0f);
                     }
             }
 
@@ -280,46 +294,49 @@ namespace SpaceTaxi.GameStates
 //Collisision detction on platforms
             foreach (EntityContainer<Platform> e in ActiveLevel.speratedplatforms) {
                 foreach (Platform p in e){
-                    if (DIKUArcade.Physics.CollisionDetection.Aabb(player.Entity.Shape.AsDynamicShape(), p.Shape).Collision){
+                    if (DIKUArcade.Physics.CollisionDetection.Aabb(player.Entity.Shape.AsDynamicShape(), 
+                        p.Shape).Collision){
 
 //Customer drop off logic
-                            foreach(Customer c in allCustomer){
-                                char[] tempcharlist = c.destinationplatform.ToCharArray();
-                                char tempc = tempcharlist[0];
+                        foreach(Customer c in allCustomer){
+                            char[] tempcharlist = c.destinationplatform.ToCharArray();
+                            char tempc = tempcharlist[0];
 
-                                char[] temp = c.currentplatform.ToCharArray();
-                                char tempcc = temp[0];
+                            char[] temp = c.currentplatform.ToCharArray();
+                            char tempcc = temp[0];
 
-                                if(c.pickedUp){
-                                    if(!c.dropOffAny){
-                                        
-                                        var tempindex = Platforms.ToList().FindIndex( q => q == tempc);
-                                        var tempcontainer = speratedplatforms[tempindex].GetEnumerator();
-                                        tempcontainer.MoveNext();
-                                        Platform qqqqq = (Platform) tempcontainer.Current;
-                                        if((!c.isDroppedOff && Platforms[speratedplatforms.IndexOf(e)] == tempc)){                                   
-                                            c.Spawn(player.Entity.Shape.Position + new Vec2F(0.05f, 0.0f));
-                                            c.dropOff();
-                                            c.EdgeOfDestination(qqqqq.Shape.Position.X - 0.1f);
-                                        }
-                                    } else if(c.dropOffAny){
-                                        
-                                        foreach (EntityContainer<Platform> q in ActiveLevel.speratedplatforms) {
-                                            foreach (Platform qq in q){
-                                                if ((DIKUArcade.Physics.CollisionDetection.Aabb(player.Entity.Shape.AsDynamicShape(), qq.Shape).Collision) && ActiveLevel.Platforms[ActiveLevel.speratedplatforms.IndexOf(q)] != tempcc){
-                                                        var tempq = ActiveLevel.speratedplatforms.IndexOf(q);
-                                                        var tempqq = ActiveLevel.speratedplatforms[tempq].GetEnumerator();
-                                                        tempqq.MoveNext();
-                                                        Platform qqq = (Platform) tempqq.Current;
-                                                        c.Spawn(player.Entity.Shape.Position + new Vec2F(0.05f, 0.0f));
-                                                        c.dropOff();
-                                                        c.EdgeOfDestination(qqq.Shape.Position.X - 0.1f);
-                                                }
+                            if(c.pickedUp){
+                                if(!c.dropOffAny){                
+                                    var tempindex = Platforms.ToList().FindIndex( q => q == tempc);
+                                    var tempcontainer = speratedplatforms[tempindex].GetEnumerator();
+                                    tempcontainer.MoveNext();
+                                    Platform qqqqq = (Platform) tempcontainer.Current;
+                                    if((!c.isDroppedOff && Platforms[speratedplatforms.IndexOf(e)] == tempc)){                                   
+                                        c.Spawn(player.Entity.Shape.Position + new Vec2F(0.05f, 0.0f));
+                                        c.dropOff();
+                                        c.EdgeOfDestination(qqqqq.Shape.Position.X - 0.1f);
+                                    }
+                                } else if(c.dropOffAny){
+                                    foreach (EntityContainer<Platform> q in ActiveLevel.speratedplatforms) {
+                                        foreach (Platform qq in q){
+                                            if ((DIKUArcade.Physics.CollisionDetection.Aabb(player.
+                                                Entity.Shape.AsDynamicShape(), qq.Shape).Collision) 
+                                                && ActiveLevel.Platforms[ActiveLevel.speratedplatforms.
+                                                IndexOf(q)] != tempcc){
+                                                    var tempq = ActiveLevel.speratedplatforms.IndexOf(q);
+                                                    var tempqq = ActiveLevel.speratedplatforms[tempq].
+                                                        GetEnumerator();
+                                                    tempqq.MoveNext();
+                                                    Platform qqq = (Platform) tempqq.Current;
+                                                    c.Spawn(player.Entity.Shape.Position + 
+                                                        new Vec2F(0.05f, 0.0f));
+                                                    c.dropOff();
+                                                    c.EdgeOfDestination(qqq.Shape.Position.X - 0.1f);
                                             }
                                         }
                                     }
-                                    
-                                }
+                                }    
+                            }
                                 if (c.dropOffAny){
                                     var tempq = ActiveLevel.speratedplatforms.IndexOf(e);
                                     var tempqq = ActiveLevel.speratedplatforms[tempq].GetEnumerator();
@@ -343,33 +360,36 @@ namespace SpaceTaxi.GameStates
 //Collisision detction on platforms
             foreach (EntityContainer<Platform> e in ActiveLevel.speratedplatforms) {
                 foreach (Platform p in e){
-                    if (DIKUArcade.Physics.CollisionDetection.Aabb(player.Entity.Shape.AsDynamicShape(), p.Shape).Collision){
-                        if(player.Physics.Y > -0.004f){
-                            player.Physics.Y = 0.0f;
-                            player.Physics.X = 0.0f;
+                    if (DIKUArcade.Physics.CollisionDetection.Aabb(player.Entity.Shape.AsDynamicShape(), 
+                        p.Shape).Collision){
+                            if(player.Physics.Y > -0.004f){
+                                player.Physics.Y = 0.0f;
+                                player.Physics.X = 0.0f;
 
 //Player death                            
-                        } else {
-                            player.Entity.DeleteEntity();
-                            AddExplosion(player.Entity.Shape.Position.X-0.05f, player.Entity.Shape.Position.Y-0.05f,0.2f,0.2f);
-                            player.Entity.Shape.Position = new Vec2F(5.0f,5.0f);
-                        }
+                            } else {
+                                player.Entity.DeleteEntity();
+                                AddExplosion(player.Entity.Shape.Position.X-0.05f, 
+                                    player.Entity.Shape.Position.Y-0.05f,0.2f,0.2f);
+                                player.Entity.Shape.Position = new Vec2F(5.0f,5.0f);
+                            }
                     }
                 }
             }
 
 //Collision detection on portal
             foreach (Entity p in ActiveLevel.portal) {
-                    if (DIKUArcade.Physics.CollisionDetection.Aabb(player.Entity.Shape.AsDynamicShape(), p.Shape).Collision){
-                        if (ActiveLevel == Level1){
-                            player.Entity.Shape.Position = startpos2;
-                            player.Physics = new Vec2F (0.0f, 0.0f);
-                            ActiveLevel = Level2;
-                        } else if (ActiveLevel == Level2){
-                            player.Entity.Shape.Position = startpos1;
-                            player.Physics = new Vec2F (0.0f, 0.0f);
-                            ActiveLevel = Level1;
-                        }
+                    if (DIKUArcade.Physics.CollisionDetection.Aabb(player.Entity.Shape.AsDynamicShape(), 
+                        p.Shape).Collision){
+                            if (ActiveLevel == Level1){
+                                player.Entity.Shape.Position = startpos2;
+                                player.Physics = new Vec2F (0.0f, 0.0f);
+                                ActiveLevel = Level2;
+                            } else if (ActiveLevel == Level2){
+                                player.Entity.Shape.Position = startpos1;
+                                player.Physics = new Vec2F (0.0f, 0.0f);
+                                ActiveLevel = Level1;
+                            }
                     }
             }
         }
