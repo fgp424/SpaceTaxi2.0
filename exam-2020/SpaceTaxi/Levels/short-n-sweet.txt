@@ -30,7 +30,7 @@ Platforms: 1
 1) neptune-square.png
 2) green-square.png
 3) yellow-stick.png
-o) purple-circle.png 
+o) purple-circle.png
 
 G) green-upper-left.png
 H) green-upper-right.png
