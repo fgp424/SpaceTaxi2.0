@@ -51,11 +51,15 @@ public class Player : IGameEventProcessor<object> {
         Physics = new Vec2F(0.0f, 0.0f);
         hasCustomer = false;
     }
-
+/// <summary>
+/// Method that changes field values in player
+/// </summary>
     public void PickUp(string name){
         hasCustomer = true;
     }
-    
+/// <summary>
+/// Method that changes field values in player
+/// </summary>   
     public void DroppedOff(){
         hasCustomer = false;
     }

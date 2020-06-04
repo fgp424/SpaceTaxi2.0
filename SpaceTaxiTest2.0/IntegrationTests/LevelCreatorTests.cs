@@ -45,7 +45,6 @@ using SpaceTaxi.LevelLoading;
             LevelCreator1 = new LevelCreator();
             Level1 = LevelCreator1.CreateLevel("short-n-sweet.txt");
             testchar = Convert.ToChar(0x0);
-
         }
         // actual tests.
         [Test]
@@ -53,7 +52,6 @@ using SpaceTaxi.LevelLoading;
         {
             Assert.AreEqual(LevelCreator1.reader.GetType(),TestReader.GetType());
         }
-
 
         [Test]
         public void ReaderDeletion()

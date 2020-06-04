@@ -348,14 +348,10 @@ namespace SpaceTaxi.GameStates
                                             player.DroppedOff();
                                         }
                                 }
-
-
                             }
                     }
                 }
             }
-
-
 
 //Collisision detction on platforms
             foreach (EntityContainer<Platform> e in ActiveLevel.speratedplatforms) {

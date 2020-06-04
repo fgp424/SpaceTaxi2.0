@@ -9,9 +9,16 @@ namespace SpaceTaxi.Enums {
         MainMenu,
         GameResume
     }
-    public class StateTransformer{
-        
 
+/// <summary>
+/// Statetransformer class for converting states
+/// </summary>
+    public class StateTransformer{
+/// <summary>
+/// Changes the state from string to state
+/// </summary>
+/// <param name="state">string with statename input</param>
+/// <returns>state enum</returns>
         public static GameStateType TransformStringToState(string state){
             GameStateType ret = GameStateType.GameRunning;
             switch (state) {
@@ -32,7 +39,11 @@ namespace SpaceTaxi.Enums {
             }
         return ret;
         }
-
+/// <summary>
+/// Transforms a state to a string
+/// </summary>
+/// <param name="state">Game state enum</param>
+/// <returns>string</returns>
         public static string TransformStateToString(GameStateType state){
             var ret = "";
             switch (state) {

@@ -29,8 +29,7 @@ using SpaceTaxi.StaticObjects;
             DIKUArcade.Window.CreateOpenGLContext();
             Customer = new Customer (new DynamicShape(new Vec2F(0.0f, 0.0f), new Vec2F((.1f), (.1f))), 
                                 new Image(Path.Combine("Assets", "Images", "Taxi_Thrust_None_Right.png")),
-                                "Kurt", "1", "^J", 10, 100, 10);
-                
+                                "Kurt", "1", "^J", 10, 100, 10);               
         }
 
 
